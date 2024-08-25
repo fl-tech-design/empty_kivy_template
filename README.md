@@ -8,7 +8,7 @@ This is a basic template for a Kivy application that features a simple home scre
 - **Settings Page:** Allows language adjustment.
 
 ## Requirements
-git- Python 3.10
+- Python 3.10
 - Kivy
 
 ## Installation
@@ -19,5 +19,15 @@ git- Python 3.10
     cd MyKivyApp
 
 2. **Create a virtual environment (optional but recommended):**
+    ```bash
     python3 -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    source venv/bin/activate  # On Windows, use venv\Scripts\activate
+
+3. **Install the required dependencies:**
+    ```bash
+    pip install -r requirements.txt
+
+4. **Run the application:**
+    ```bash
+    python3 main.py
+
