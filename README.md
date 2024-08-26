@@ -15,7 +15,7 @@ This is a basic template for a Kivy application that features a simple home scre
 1. **Clone the repository:**
    ```bash
     git clone https://github.com/fl-tech-design/empty_kivy_template.git
-    cd MyKivyApp
+    cd EmptyKivyTemplate
 
 2. **Create a virtual environment (optional but recommended):**
     ```bash
