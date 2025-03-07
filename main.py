@@ -1,12 +1,32 @@
 # main.py
+# Import constants from constants.py
+from constants import (
+    LIST_KV_FILES,
+    SPL_SCREEN_START_APP,
+    DATA_BASE,
+    TXT_BASE,
+    DATA_USERS,
+    APP_TITLE,
+    CONFIG_STAT,
+    USER_MANAGEMENT
+)
 
+## configuration of kivy
 from kivy.config import Config
-from kivy.core.window import Window
 
-# Set the window to be non-resizable and specify its size
-Config.set("graphics", "resizable", "0")
-Config.write()
-Window.size = (450, 850)  # Example for a 9:16 aspect ratio
+def config_win_size(h="850", w="850"):
+    ## for configuration of kivy
+    # Set the window to be (non)-resizable and specify its size
+    Config.set("graphics", "resizable", "1")
+    Config.set("graphics", "height", h)
+    Config.set("graphics", "width", w)
+    Config.write()
+
+if CONFIG_STAT:
+    config_win_size()
+
+# Imports of basic packages
+import sys
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -14,29 +34,23 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 
 # Import DataControl
-from contr_data import load_base_data
-from contr_data import update_base_data
+from contr_data import read_from_json, update_base_data
+
+from libs.user_management import UserManager
 
 # Import pages
 from pages.loadingpage import LoadingPage
 from pages.startpage import StartPage
 from pages.settingpage import SettingPage
 
-from constants import (
-    LIST_KV_FILES,
-    SPL_SCREEN_START_APP,
-    DATA_BASE,
-    TXT_BASE,
-    APP_TITLE,
-)
 
 from popups.pop_info import Pop_Info
+from popups.pop_auth_user import Pop_Auth_User
+
 
 # Load all KV files
 for kv_file in LIST_KV_FILES:
     Builder.load_file(kv_file)
-
-
 
 
 class MainApp(App):
@@ -55,12 +69,17 @@ class MainApp(App):
 
         # Initialize DataControl and load JSON data
         self.base_data, self.base_txt = {}, {}
+        self.users_data = {}
         self.color1, self.color2, self.color3 = [], [], []
-        self.load_base_data()
+        self.load_app_data()
+
+        # Initialize the UserManager
+        if USER_MANAGEMENT:
+            self.user_manager = UserManager()
+            self.start_user_management()
 
         # Initialize the ScreenManager
         self.scr_man = ScreenManager()
-
         return self._create_screen_manager()
 
     def _create_screen_manager(self) -> ScreenManager:
@@ -122,15 +141,16 @@ class MainApp(App):
         new_screen = self.scr_man.get_screen(new_scr_name)
         Clock.schedule_once(lambda dt: new_screen.children[0].upd_page(), 0)
 
-    def load_base_data(self) -> None:
+    def load_app_data(self) -> None:
         """
         load base data in the app.
 
         Loads the colors and text data, and converts color values from 0-255 to 0-1 range.
         """
         # Store the loaded colors as instance variables
-        self.base_data = load_base_data(DATA_BASE)
-        self.base_txt = load_base_data(TXT_BASE)[self.base_data["curr_lang"]]
+        self.base_data = read_from_json(DATA_BASE)
+        self.base_txt = read_from_json(TXT_BASE)[self.base_data["curr_lang"]]
+        self.users_data = read_from_json(DATA_USERS)
         self.color1 = [c / 255 for c in self.base_data["colors"]["color1"]]
         self.color2 = [c / 255 for c in self.base_data["colors"]["color2"]]
         self.color3 = [c / 255 for c in self.base_data["colors"]["color3"]]
@@ -153,9 +173,22 @@ class MainApp(App):
             update_base_data("curr_lang", "de")
         elif new_language == self.base_txt["english"]:
             update_base_data("curr_lang", "en")
-        self.load_base_data()
+        self.read_from_json()
         new_screen = self.scr_man.get_screen("page_setting")
         Clock.schedule_once(lambda dt: new_screen.children[0].upd_page(), 0)
+
+    def start_user_management(self):
+        if not self.users_data["user_stat"]:
+            create_user_popup = Pop_Auth_User(app, "register")
+            create_user_popup.open()
+        if not self.users_data["login_stat"]:
+            login_user_popup = Pop_Auth_User(app, "login")
+            login_user_popup.open()
+
+    def on_stop(self):
+        if USER_MANAGEMENT:
+            self.user_manager.change_login_state(False)
+        sys.exit()
 
 if __name__ == "__main__":
     app = MainApp()

@@ -6,6 +6,7 @@ from kivy.app import App
 from contr_str import let_uppercase_first
 from constants import DIR_FLAGS
 
+
 class SettingPage(Screen):
     def __init__(self, app: App, **kwargs: Dict[str, Any]) -> None:
         """
@@ -27,11 +28,18 @@ class SettingPage(Screen):
         ]
         # Middle box definitions
         self.ids.lab_tit_lang.text = self.app.base_txt["languages"]
-        self.ids.box_flag_1.ids.img_flag.source = (DIR_FLAGS + "flag_germany.png")
-        self.ids.box_flag_1.ids.lab_flag.text = let_uppercase_first(self.app.base_txt["german"])
-        
-        self.ids.box_flag_2.ids.img_flag.source = (DIR_FLAGS + "flag_uk.png")
-        self.ids.box_flag_2.ids.lab_flag.text = let_uppercase_first(self.app.base_txt["english"])
+        self.ids.box_flag_1.ids.img_flag.source = DIR_FLAGS + "flag_germany.png"
+        self.ids.box_flag_1.ids.lab_flag.text = let_uppercase_first(
+            self.app.base_txt["german"]
+        )
+
+        self.ids.box_flag_2.ids.img_flag.source = DIR_FLAGS + "flag_uk.png"
+        self.ids.box_flag_2.ids.lab_flag.text = let_uppercase_first(
+            self.app.base_txt["english"]
+        )
+
+        self.ids.lbl_add_new_user.text = self.app.base_txt["new_user"]
+        self.ids.btn_add_new_user.text = self.app.base_txt["add"]
 
         # Bottom box definitions
         self.ids.b_box_settings.ids.but_1.text = let_uppercase_first(
@@ -40,5 +48,3 @@ class SettingPage(Screen):
         self.ids.b_box_settings.ids.but_2.text = let_uppercase_first(
             self.app.base_txt["exit"]
         )
-
-

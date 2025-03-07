@@ -36,18 +36,18 @@
 ###
 # vordefinierte Buttons und sonstiges die in die app eingefügt werden können.
 ###
-<ButClear@Button>:
+<Btn_Clear@Button>:
     color: fs22_n if self.state == 'normal' else fs22_d
     background_color: 0,0,0,0
     font_name: constants.DIR_FONTS + 'Jura-Medium.otf'
     font_size: self.height * 0.6
 
-<LabBig@Label>:
+<Lbl_Big@Label>:
     color: fs22_n
     font_name: constants.DIR_FONTS + 'Jura-DemiBold.otf'
     font_size: self.height * 0.6
 
-<LabSmall@Label>:
+<Lbl_Small@Label>:
     color: fs22_n
     font_name: constants.DIR_FONTS + 'Jura-Light.otf'
     font_size: self.height * 0.6
@@ -71,13 +71,14 @@
             Image:
                 id: img_flag
         BoxUnlined:
-            ButClear:
+            Btn_Clear:
                 id: lab_flag
                 on_release: app.change_language(self.text.lower())
 
 # Titelbox
 <BoxTitle@BoxLayout>:
-    size_hint_y: 0.05
+    size_hint_y: None
+    height: "32dp"
     BoxUnlined:
         padding: 2
         BoxLined_1:
@@ -86,14 +87,14 @@
                 Logo_Main:
             BoxUnlined:
                 # Label für Seitentitel
-                LabBig:
+                Lbl_Big:
                     id: lab_tit_page
                     font_size: self.height * 0.8
                     halign: 'center'
                     color: grey2
             BoxUnlined:
                 size_hint_x: 0.2
-                ButClear:
+                Btn_Clear:
                     id: but_info
                     text: "?"
                     halign: 'right'
@@ -101,17 +102,26 @@
 ###
 # Bottombox
 <BoxBottom@BoxLayout>:
-    size_hint_y: 0.05
+    size_hint_y: None
+    height: "32dp"
     BoxUnlined:
         padding: 2
         BoxLined_1:
-            ButClear:
+            Btn_Clear:
                 id: but_1
                 font_size: self.height * 0.5
                 on_release: app.change_screen('left', 'page_setting') if app.scr_man.current == 'page_start' else app.change_screen('right', 'page_start')
             
             # Box Button right in Bottombox            
-            ButClear:
+            Btn_Clear:
                 id: but_2
                 font_size: self.height * 0.5
                 on_release: app.stop()
+
+<BoxRed@BoxLayout>:
+    canvas.before:
+        Color:
+            rgb: 1,0,0
+        Rectangle:
+            size: self.size
+            pos: self.pos
