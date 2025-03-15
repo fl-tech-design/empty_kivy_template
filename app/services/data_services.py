@@ -1,19 +1,10 @@
-from kivy.uix.behaviors import DragBehavior
-
 # datacontrol.py
-import os
 import json
-import logging
 from typing import Dict, Any
-from constants import DATA_BASE, DATA_APP, DIR_USERFILES
+from constants import DATA_BASE
+from app.services.logger_config import setup_logger
 
-# Konfiguriere das Logging
-logging.basicConfig(
-    filename="errors.log",
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
-
+logger = setup_logger()
 
 def save_base_data(data: Dict[str, Any]) -> None:
     """
@@ -26,7 +17,7 @@ def save_base_data(data: Dict[str, Any]) -> None:
         with open(DATA_BASE, "w") as file:
             json.dump(data, file, indent=4)
     except IOError as e:
-        logging.error(f"Error saving JSON file {DATA_BASE}: {e}")
+        logger.error(f"Error saving JSON file {DATA_BASE}: {e}")
 
 
 def update_base_data(key: str, new_value: Any) -> None:
@@ -42,7 +33,7 @@ def update_base_data(key: str, new_value: Any) -> None:
         data[key] = new_value
         save_base_data(data)
     else:
-        logging.error(f"Schlüssel '{key}' nicht gefunden.")
+        logger.error(f"Schlüssel '{key}' nicht gefunden.")
 
 
 def read_from_json(f_path: str) -> Dict[str, Any]:
@@ -54,7 +45,7 @@ def read_from_json(f_path: str) -> Dict[str, Any]:
         with open(f_path, "r") as file:
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        logging.error(f"Error loading JSON file {f_path}: {e}")
+        logger.error(f"Error loading JSON file {f_path}: {e}")
         return {}
 
 
@@ -69,4 +60,5 @@ def save_to_json(f_path: str, data: Dict[str, Any]) -> None:
         with open(f_path, "w") as file:
             json.dump(data, file, indent=4)
     except IOError as e:
-        logging.error(f"Error saving JSON file {f_path}: {e}")
+        logger.error(f"Error saving JSON file {f_path}: {e}")
+

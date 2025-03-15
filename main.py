@@ -47,7 +47,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 
 # Import DataControl
-from app.services.contr_data import read_from_json
+from app.services.data_services import read_from_json
 
 from app.services.user_management import UserManager
 
@@ -201,7 +201,7 @@ class MainApp(App):
             Relies on the global USER_MANAGEMENT flag to determine behavior.
         """
         if USER_MANAGEMENT:
-            self.user_manager.change_login_state(False)
+            self.user_manager.change_stat("login_stat",False)
 
 
 if __name__ == "__main__":

@@ -63,7 +63,7 @@ class Pop_Auth_User(Popup):
         try:
             if self.mode == "login":
                 if self.user_manager.verify_password(username, password):
-                    self.user_manager.change_login_state(True)
+                    self.user_manager.change_stat("login_stat", True)
                     self._close_popup()
                 else:
                     popup_err_login = Pop_Info(
@@ -74,8 +74,8 @@ class Pop_Auth_User(Popup):
             elif self.mode == "register":
                 hashed_pw = self.user_manager.hash_password(password)
                 self.user_manager.add_new_user_to_list(username, hashed_pw)
-                self.user_manager.change_user_stat(True)
-                self.user_manager.change_login_state(True)
+                self.user_manager.change_stat("user_stat",True)
+                self.user_manager.change_stat("login_stat",True)
                 self._close_popup()
 
         except Exception as e:

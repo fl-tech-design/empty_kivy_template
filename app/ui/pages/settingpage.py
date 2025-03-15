@@ -1,14 +1,19 @@
 # settingpage.py
-from constants import DIR_FLAGS
-
 from typing import Any, Dict
+import os
+from app.services.logger_config import setup_logger
+
+logger = setup_logger()
+
+from constants import DIR_FLAGS, DIR_USERFILES
+
 
 from kivy.uix.screenmanager import Screen
 from kivy.app import App
 from kivy.clock import Clock
 
 from app.services.contr_str import let_upper_first
-from app.services.contr_data import update_base_data
+from app.services.data_services import update_base_data
 
 
 class SettingPage(Screen):
@@ -16,11 +21,12 @@ class SettingPage(Screen):
         """
         Initialize the SettingPage screen.
 
-        :param app: The main application instance.
-        :param kwargs: Additional keyword arguments.
+        :param app: The main application instance
+        :param kwargs: Additional keyword arguments for Kivy
         """
         super(SettingPage, self).__init__(**kwargs)
         self.app = app
+        self.usr_man = self.app.get_user_manager()
         self.ids.box_flag_1.ids.img_flag.source = DIR_FLAGS + "flag_germany.png"
         self.ids.box_flag_2.ids.img_flag.source = DIR_FLAGS + "flag_uk.png"
         self.ids.box_flag_1.ids.lab_but_flag.bind(
@@ -32,14 +38,20 @@ class SettingPage(Screen):
 
     def upd_page(self, *args: Any) -> None:
         """
-        Update the text elements on the settings page based on the application's base text data.
+        Update all dynamic content on the settings page.
+
+        This method refreshes text elements and UI components based on the current
+        application state and language settings. Should be called after language
+        changes or configuration updates.
         """
         self.upd_labels()
 
-    def upd_labels(self):
+    def upd_labels(self) -> None:
         """
-        Updates all labeltextes of this page
-        Returns: None
+        Refresh all text elements on the page.
+
+        Updates labels and buttons according to the current language settings
+        stored in the application's base_txt dictionary.
         """
         self.ids.t_box_sett.ids.lab_tit_page.text = self.app.base_txt["tit_page_sett"]
         self.ids.lab_tit_lang.text = self.app.base_txt["languages"]
@@ -57,12 +69,17 @@ class SettingPage(Screen):
         )
         self.ids.lbl_add_new_user.text = self.app.base_txt["new_user"]
         self.ids.btn_add_new_user.text = self.app.base_txt["add"]
+        self.ids.lbl_res_u_data.text = self.app.base_txt["res_u_data"]
+        self.ids.btn_res_u_data.text = self.app.base_txt["delete"]
 
     def change_language(self, new_language: str) -> None:
         """
-        Change the application's language setting and update the page accordingly.
+        Handle language change requests.
 
-        :param new_language: The new language to set (e.g., "German" or "English").
+        Updates the application's language configuration and refreshes the UI
+        to reflect the new language setting.
+
+        :param new_language: Language code to switch to (e.g., "de" or "en")
         """
         if new_language == self.app.base_txt["german"]:
             update_base_data("curr_lang", "de")
@@ -70,5 +87,43 @@ class SettingPage(Screen):
             update_base_data("curr_lang", "en")
         self.app.load_app_data()
         Clock.schedule_once(self.upd_page)
-        # new_screen = self.scr_man.get_screen("page_setting")
-        # Clock.schedule_once(lambda dt: new_screen.children[0].upd_page(), 0)
+
+    def add_new_user(self):
+        self.usr_man.change_stat("user_stat", False)
+        self.app.load_app_data()
+        self.app.start_user_management()
+
+    def reset_userdata(self) -> None:
+        """
+        Resets all user data to initial state.
+
+        Performs two main actions:
+        1. Deletes all individual user JSON files in DIR_USERFILES
+        2. Resets the main user management data to default values
+
+        Note:
+            This is a destructive operation that:
+            - Removes all user accounts
+            - Deletes all user-specific data files
+            - Resets login and user management status
+        """
+        try:
+            for filename in os.listdir(DIR_USERFILES):
+                if filename.endswith(".json"):
+                    file_path = os.path.join(DIR_USERFILES, filename)
+                    try:
+                        os.remove(file_path)
+                        logger.info(f"Deleted user file: {file_path}")
+                    except Exception as e:
+                        logger.error(f"Failed to delete {file_path}: {e}")
+        except Exception as e:
+            logger.error(f"Failed to access user files directory: {e}")
+
+        try:
+            self.usr_man._create_default_data()
+            logger.info("User management data reset to default state")
+        except Exception as e:
+            logger.error(f"Failed to reset user management data: {e}")
+        self.app.load_app_data()
+        self.app.change_screen("right", "page_start")
+        self.app.start_user_management()

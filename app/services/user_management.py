@@ -1,22 +1,22 @@
 # user_management.py
-
-from constants import DATA_USERS
-
-import bcrypt
-import json
-import os
-
-
-import os
-import json
-import bcrypt
 from typing import Dict, Any
+from datetime import datetime
+
+from constants import DATA_USERS, DIR_USERFILES
+
+from app.services.logger_config import setup_logger
+logger = setup_logger()
+
+import bcrypt
+import json
+import os
+
 
 class UserManager:
     def __init__(self):
         """
         Initializes the user manager with configuration data.
-        
+
         Loads user data from the configured JSON file, creates default
         data structure if the file doesn't exist.
         """
@@ -26,7 +26,7 @@ class UserManager:
     def _load_data(self) -> Dict[str, Any]:
         """
         Loads user data from the configured JSON file.
-        
+
         Creates default data if the file doesn't exist. Should only be
         called during initialization.
 
@@ -42,7 +42,7 @@ class UserManager:
     def _save_data(self) -> None:
         """
         Persists current user data to the JSON file.
-        
+
         Writes the entire data structure to disk with indentation
         for human readability.
         """
@@ -52,7 +52,7 @@ class UserManager:
     def _create_default_data(self) -> None:
         """
         Creates initial default user data structure.
-        
+
         Defines the base structure containing:
         - user_stat (bool)
         - login_stat (bool)
@@ -69,7 +69,7 @@ class UserManager:
     def hash_password(self, password: str) -> str:
         """
         Creates a bcrypt password hash.
-        
+
         Uses bcrypt's salted hashing mechanism for secure password storage.
 
         Args:
@@ -85,7 +85,7 @@ class UserManager:
     def verify_password(self, username: str, password: str) -> bool:
         """
         Verifies password against stored hash.
-        
+
         Checks if the user exists and the password matches the stored hash.
 
         Args:
@@ -100,10 +100,49 @@ class UserManager:
         stored_hash = self.data["users"][username].encode("utf-8")
         return bcrypt.checkpw(password.encode("utf-8"), stored_hash)
 
+    def create_userfile(self, username: str, hashed_pw: str) -> None:
+        """
+        Creates a JSON file containing basic user information.
+
+        Generates a user-specific JSON file in the configured directory
+        containing authentication information and creation timestamp.
+        Errors during file operations are logged but not raised.
+
+        Args:
+            username: Unique identifier for the user
+            hashed_pw: Pre-hashed password string (bcrypt format)
+
+        File structure:
+            {
+                "username": {
+                    "username": str,
+                    "password_hash": str,
+                    "created_at": str (ISO 8601 timestamp)
+                }
+            }
+
+        Raises:
+            No explicit exceptions (IO errors are caught and logged)
+        """
+        f_path: str = f"{DIR_USERFILES}{username}.json"
+        data: Dict[str, Dict[str, str]] = {
+            username: {
+                "username": username,
+                "password_hash": hashed_pw,
+                "created_at": datetime.now().isoformat(),
+            }
+        }
+
+        try:
+            with open(f_path, "w") as file:
+                json.dump(data, file, indent=4)
+        except IOError as e:
+            logger.error(f"Error saving JSON file {f_path}: {e}")
+
     def add_new_user_to_list(self, username: str, hashed_pw: str) -> None:
         """
         Registers a new user in the system.
-        
+
         Validates username uniqueness before adding to the user list.
 
         Args:
@@ -117,27 +156,17 @@ class UserManager:
             raise ValueError("Username already exists")
         self.data["users"][username] = hashed_pw
         self._save_data()
+        self.create_userfile(username, hashed_pw)
 
-    def change_user_stat(self, new_user_stat: bool) -> None:
+    def change_stat(self, which_stat: str, new_user_stat: bool) -> None:
         """
         Updates the user management status.
-        
+
         Persists the change to the configuration file immediately.
 
         Args:
             new_user_stat: New status value to set
         """
-        self.data["user_stat"] = new_user_stat
+        self.data[which_stat] = new_user_stat
         self._save_data()
 
-    def change_login_state(self, new_login_state: bool) -> None:
-        """
-        Updates the login status.
-        
-        Persists the change to the configuration file immediately.
-
-        Args:
-            new_login_state: New login status value to set
-        """
-        self.data["login_stat"] = new_login_state
-        self._save_data()

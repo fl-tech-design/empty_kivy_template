@@ -27,6 +27,7 @@
 # Box für die zweite Sprache
                 BoxFlag:
                     id: box_flag_2
+# Box create_new_user
             BoxUnlined:
                 size_hint_y: None
                 height: "20dp"
@@ -35,6 +36,17 @@
                         id: lbl_add_new_user
                     Btn_Clear:
                         id: btn_add_new_user
+                        on_release: root.add_new_user()
+# Box reset_userdata
+            BoxUnlined:
+                size_hint_y: None
+                height: "20dp"
+                BoxLined_1:
+                    Lbl_Small:
+                        id: lbl_res_u_data
+                    Btn_Clear:
+                        id: btn_res_u_data
+                        on_release: root.reset_userdata()
             BoxUnlined:
 # Box Fusszeile    
             BoxBottom:

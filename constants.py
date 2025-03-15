@@ -16,14 +16,16 @@ TXT_APP = os.path.join(os.path.dirname(__file__), "data/app/app_txt.json")
 DATA_USERS = os.path.join(os.path.dirname(__file__), "data/users/user_data.json") 
 
 
-DIR_USERFILES = os.path.join(os.path.dirname(__file__), "data/app/files_user/")
+DIR_USERFILES = os.path.join(os.path.dirname(__file__), "data/users/userfiles/")
 DIR_FONTS = os.path.join(os.path.dirname(__file__), "data/base/base_fonts/")
 DIR_FLAGS = os.path.join(os.path.dirname(__file__), "data/base/base_images/")
 DIR_POPS = os.path.join(os.path.dirname(__file__), "app/ui/popups/")
 
 LIST_KV_FILES = [
     "data/base/colors.kv",
-    "data/base/own_widgets.kv",
+    "app/widgets/own_buttons.kv",
+    "app/widgets/own_labels.kv",
+    "app/widgets/own_widgets.kv",
     "app/ui/pages/startpage.kv",
     "app/ui/pages/settingpage.kv",
 ]
