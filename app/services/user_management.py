@@ -1,6 +1,5 @@
 # user_management.py
 
-
 from constants import DATA_USERS
 
 import bcrypt

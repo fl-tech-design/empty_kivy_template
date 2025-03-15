@@ -15,9 +15,21 @@ from constants import (
 from kivy.config import Config
 
 
-def config_win_size(h="850", w="850"):
-    ## for configuration of kivy
-    # Set the window to be (non)-resizable and specify its size
+def config_win_size(h: str = "850", w: str = "850") -> None:
+    """
+    Configure Kivy window dimensions and resizable state.
+
+    Sets the initial window size and enables/disables resizing capability.
+    Must be called BEFORE creating the App instance to take effect.
+    Configuration is persisted to the Kivy config file.
+
+    Args:
+        h (str): Window height in pixels (default: "850")
+        w (str): Window width in pixels (default: "850")
+
+    Example:
+        config_win_size("1080", "1920")  # Sets 1920x1080 window
+    """
     Config.set("graphics", "resizable", "1")
     Config.set("graphics", "height", h)
     Config.set("graphics", "width", w)
@@ -35,18 +47,18 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 
 # Import DataControl
-from contr_data import read_from_json, update_base_data
+from app.services.contr_data import read_from_json
 
-from libs.user_management import UserManager
+from app.services.user_management import UserManager
 
 # Import pages
-from pages.loadingpage import LoadingPage
-from pages.startpage import StartPage
-from pages.settingpage import SettingPage
+from app.ui.pages.loadingpage import LoadingPage
+from app.ui.pages.startpage import StartPage
+from app.ui.pages.settingpage import SettingPage
 
 
-from popups.pop_info import Pop_Info
-from popups.pop_auth_user import Pop_Auth_User
+from app.ui.popups.pop_info import Pop_Info
+from app.ui.popups.pop_auth_user import Pop_Auth_User
 
 
 # Load all KV files
@@ -105,15 +117,13 @@ class MainApp(App):
 
         # Erstelle die StartPage
         self.start_page = Screen(name="page_start")
-        self.start_page.add_widget(
-            StartPage(app)
-        )  # StartPage ist ein Widget, kein Screen
+        self.start_page.add_widget(StartPage(app))
         self.scr_man.add_widget(self.start_page)
         Clock.schedule_once(lambda dt: self.start_page.children[0].upd_page(), 0)
 
         # Erstelle die SettingPage
         self.setting_page = Screen(name="page_setting")
-        self.setting_page.add_widget(SettingPage(app))  # SettingPage ist ein Widget
+        self.setting_page.add_widget(SettingPage(app))
         self.scr_man.add_widget(self.setting_page)
 
         return self.scr_man
@@ -153,21 +163,13 @@ class MainApp(App):
         popup = Pop_Info(app, inf_msg)
         popup.open()
 
-    def change_language(self, new_language: str) -> None:
-        """
-        Change the application's language setting and update the page accordingly.
-
-        :param new_language: The new language to set (e.g., "German" or "English").
-        """
-        if new_language == self.base_txt["german"]:
-            update_base_data("curr_lang", "de")
-        elif new_language == self.base_txt["english"]:
-            update_base_data("curr_lang", "en")
-        self.read_from_json()
-        new_screen = self.scr_man.get_screen("page_setting")
-        Clock.schedule_once(lambda dt: new_screen.children[0].upd_page(), 0)
-
     def start_user_management(self):
+        """
+        If USER_MANAGEMENT == True, user management is activated and this function
+        controls which user status is active and opens the corresponding pop-up.
+
+        Returns: None
+        """
         if not self.users_data["user_stat"]:
             create_user_popup = Pop_Auth_User(app, "register")
             create_user_popup.open()
@@ -175,10 +177,29 @@ class MainApp(App):
             login_user_popup = Pop_Auth_User(app, "login")
             login_user_popup.open()
 
-    def get_user_manager(self):
+    def get_user_manager(self) -> "UserManager":
+        """
+        Provides access to the user management system for cross-module usage.
+
+        This getter method ensures controlled access to the user manager instance,
+        which handles authentication, user data storage, and session management.
+
+        Returns:
+            UserManager: Singleton instance coordinating user-related operations
+        """
         return self.user_manager
 
-    def on_stop(self):
+    def on_stop(self) -> None:
+        """
+        Handles application shutdown procedures.
+
+        If user management is enabled (USER_MANAGEMENT = True), this method
+        resets the login state through the user manager. Called automatically
+        when the Kivy application stops.
+
+        Note:
+            Relies on the global USER_MANAGEMENT flag to determine behavior.
+        """
         if USER_MANAGEMENT:
             self.user_manager.change_login_state(False)
 

@@ -8,7 +8,7 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 import time
 
-from contr_str import let_uppercase_first
+from app.services.contr_str import let_upper_first
 
 
 class LoadingPage(Screen):
@@ -49,7 +49,7 @@ class LoadingPage(Screen):
         # Status label
         self.status_label = Label(
             size_hint=(0.8, 0.1),
-            text=let_uppercase_first(f'{self.txt_lab["loading"]}'),
+            text=let_upper_first(f'{self.txt_lab["loading"]}'),
             font_size=self.height * 0.6,
             pos_hint={"x": 0.1, "y": stat_lab_y},
         )
@@ -84,14 +84,14 @@ class LoadingPage(Screen):
         time.sleep(0.1)
         self.loading_progress += 10
         self.progress_bar.value = self.loading_progress
-        self.status_label.text = let_uppercase_first(
+        self.status_label.text = let_upper_first(
             f'{self.txt_lab["loading"]}...  {self.loading_progress}%'
         )
         self.status_label.font_size = "42sp"
 
         if self.loading_progress >= 100:
             Clock.unschedule(self.load_data)
-            self.status_label.text = let_uppercase_first(
+            self.status_label.text = let_upper_first(
                 f'{self.txt_lab["loading_complete"]}!'
             )
             Clock.schedule_once(self.go_to_main_screen, 1)
