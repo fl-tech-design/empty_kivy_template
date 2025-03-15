@@ -13,7 +13,7 @@ class Pop_Auth_User(Popup):
         super().__init__(**kwargs)
         self.app = app
         self.mode = mode
-        self.user_manager = UserManager()
+        self.user_manager = app.get_user_manager()
         self._update_labels()
 
     def _update_labels(self):

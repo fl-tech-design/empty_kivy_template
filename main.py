@@ -8,11 +8,12 @@ from constants import (
     DATA_USERS,
     APP_TITLE,
     CONFIG_STAT,
-    USER_MANAGEMENT
+    USER_MANAGEMENT,
 )
 
 ## configuration of kivy
 from kivy.config import Config
+
 
 def config_win_size(h="850", w="850"):
     ## for configuration of kivy
@@ -22,11 +23,11 @@ def config_win_size(h="850", w="850"):
     Config.set("graphics", "width", w)
     Config.write()
 
+
 if CONFIG_STAT:
     config_win_size()
 
 # Imports of basic packages
-import sys
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -102,31 +103,20 @@ class MainApp(App):
         )
         self.scr_man.add_widget(self.spl_scr_start)
 
-        # Create the StartPage
-        self.start_page = self._create_screen("page_start", StartPage(app))
+        # Erstelle die StartPage
+        self.start_page = Screen(name="page_start")
+        self.start_page.add_widget(
+            StartPage(app)
+        )  # StartPage ist ein Widget, kein Screen
         self.scr_man.add_widget(self.start_page)
         Clock.schedule_once(lambda dt: self.start_page.children[0].upd_page(), 0)
 
-        # Create the SettingPage
-        self.setting_page = self._create_screen("page_setting", SettingPage(app))
+        # Erstelle die SettingPage
+        self.setting_page = Screen(name="page_setting")
+        self.setting_page.add_widget(SettingPage(app))  # SettingPage ist ein Widget
         self.scr_man.add_widget(self.setting_page)
 
         return self.scr_man
-
-    def _create_screen(self, name: str, widget: Screen) -> Screen:
-        """
-        Helper method to create a screen with a widget.
-
-        Args:
-            name (str): The name of the screen.
-            widget (Screen): The widget to add to the screen.
-
-        Returns:
-            Screen: The created screen with the widget added.
-        """
-        screen = Screen(name=name)
-        screen.add_widget(widget)
-        return screen
 
     def change_screen(self, new_transition: str, new_scr_name: str) -> None:
         """
@@ -181,14 +171,17 @@ class MainApp(App):
         if not self.users_data["user_stat"]:
             create_user_popup = Pop_Auth_User(app, "register")
             create_user_popup.open()
-        if not self.users_data["login_stat"]:
+        elif not self.users_data["login_stat"]:
             login_user_popup = Pop_Auth_User(app, "login")
             login_user_popup.open()
+
+    def get_user_manager(self):
+        return self.user_manager
 
     def on_stop(self):
         if USER_MANAGEMENT:
             self.user_manager.change_login_state(False)
-        sys.exit()
+
 
 if __name__ == "__main__":
     app = MainApp()

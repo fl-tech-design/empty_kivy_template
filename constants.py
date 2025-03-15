@@ -5,7 +5,7 @@ VERSION_NR = "0.0.1"
 APP_TITLE = "neue App"
 
 CONFIG_STAT = False
-USER_MANAGEMENT = False
+USER_MANAGEMENT = True
 
 DATA_BASE = os.path.join(os.path.dirname(__file__), "data_files/data_base/base_data.json")
 TXT_BASE = os.path.join(os.path.dirname(__file__), "data_files/data_base/base_txt.json")
