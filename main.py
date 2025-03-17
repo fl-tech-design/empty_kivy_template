@@ -1,5 +1,4 @@
 # main.py
-# Import constants from constants.py
 from constants import (
     LIST_KV_FILES,
     SPL_SCREEN_START_APP,
@@ -46,20 +45,24 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
 
-# Import DataControl
-from app.services.data_services import read_from_json
-
-from app.services.user_management import UserManager
+# Import data_manager
+from app.services.data_manager import read_from_json
+from app.services.user_manager import UserManager
+from app.services.popup_manager import PopupManager
 
 # Import pages
-from app.ui.pages.loadingpage import LoadingPage
-from app.ui.pages.startpage import StartPage
-from app.ui.pages.settingpage import SettingPage
+from app.ui.pages.page_load_scr import Page_Load_Scr
+from app.ui.pages.page_main_scr import StartPage
+from app.ui.pages.page_sett_scr import SettingPage
 
-
-from app.ui.popups.pop_info import Pop_Info
-from app.ui.popups.pop_auth_user import Pop_Auth_User
-
+from app.my_widgets.colored_boxlayout import (
+    ColBoxLayout_1,
+    ColBoxLayout_2,
+    ColBoxLayout_3,
+    ColoredBoxLayoutBase,
+)
+from app.services.theme_manager import ThemeManager
+from app.my_widgets.themed_widgets import Lbl_Big, Btn_Clear  # Pfad anpassen!
 
 # Load all KV files
 for kv_file in LIST_KV_FILES:
@@ -67,48 +70,50 @@ for kv_file in LIST_KV_FILES:
 
 
 class MainApp(App):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Sicherheit: theme_manager als Instanzattribut initialisieren
+        self.base_data, self.base_txt, self.users_data = {}, {}, {}
+        self.load_app_data()
+        if not hasattr(self, "theme_manager"):
+            self.theme_manager = ThemeManager()
+        self.popup_manager = PopupManager()
+        # Optional: Standard-Theme setzen
+        if USER_MANAGEMENT:
+            self.user_manager = UserManager()
+
+
+        
     def build(self) -> ScreenManager:
         """
         Builds the main application interface.
 
-        Initializes the DataControl, loads data, and sets up the ScreenManager.
+        Initializes the data_manager, loads data, and sets up the ScreenManager.
 
         Returns:
             ScreenManager: The main ScreenManager for the application.
         """
-        global app
-        app = self
         self.title = APP_TITLE
 
-        # Initialize DataControl and load JSON data
-        self.base_data, self.base_txt = {}, {}
-        self.users_data = {}
-        self.color1, self.color2, self.color3 = [], [], []
-        self.load_app_data()
 
-        # Initialize the UserManager
-        if USER_MANAGEMENT:
-            self.user_manager = UserManager()
-            self.start_user_management()
 
-        # Initialize the ScreenManager
+
         self.scr_man = ScreenManager()
+
+
         return self._create_screen_manager()
 
     def _create_screen_manager(self) -> ScreenManager:
         """
         Creates and configures the ScreenManager.
 
-        Adds the initial screens (LoadingPage, StartPage, and SettingPage) to the ScreenManager.
+        Adds the initial screens (Page_Load_Scr, StartPage, and SettingPage) to the ScreenManager.
 
         Returns:
             ScreenManager: The configured ScreenManager.
         """
-        # Create the LoadingPage
-        self.spl_scr_start = LoadingPage(
-            app,
-            self.base_txt,
-            self.scr_man,
+        # Create the Page_Load_Scr
+        self.spl_scr_start = Page_Load_Scr(
             SPL_SCREEN_START_APP,
             "page_start",
             name="spl_scr_start",
@@ -117,7 +122,7 @@ class MainApp(App):
 
         # Erstelle die StartPage
         self.start_page = Screen(name="page_start")
-        self.start_page.add_widget(StartPage(app))
+        self.start_page.add_widget(StartPage())
         self.scr_man.add_widget(self.start_page)
         Clock.schedule_once(lambda dt: self.start_page.children[0].upd_page(), 0)
 
@@ -126,7 +131,26 @@ class MainApp(App):
         self.setting_page.add_widget(SettingPage(app))
         self.scr_man.add_widget(self.setting_page)
 
+        Clock.schedule_once(self._apply_initial_theme, 0)
+
         return self.scr_man
+
+    def _apply_initial_theme(self, *args):
+        """Rekursiv alle Widgets durchsuchen und Theme anwenden"""
+        root = self.root
+        if root:
+            self._traverse_widgets(root, self._update_theme_colors)
+
+    def _traverse_widgets(self, widget, callback):
+        """Rekursive Widget-Traversal"""
+        callback(widget)
+        for child in widget.children:
+            self._traverse_widgets(child, callback)
+
+    def _update_theme_colors(self, widget):
+        """Theme-Update für kompatible Widgets"""
+        if hasattr(widget, "update_theme_colors"):
+            widget.update_theme_colors()
 
     def change_screen(self, new_transition: str, new_scr_name: str) -> None:
         """
@@ -141,6 +165,9 @@ class MainApp(App):
         new_screen = self.scr_man.get_screen(new_scr_name)
         Clock.schedule_once(lambda dt: new_screen.children[0].upd_page(), 0)
 
+    def change_theme(self, theme_name):
+        self.theme_manager.change_theme(theme_name)
+
     def load_app_data(self) -> None:
         """
         load base data in the app.
@@ -151,17 +178,6 @@ class MainApp(App):
         self.base_data = read_from_json(DATA_BASE)
         self.base_txt = read_from_json(TXT_BASE)[self.base_data["curr_lang"]]
         self.users_data = read_from_json(DATA_USERS)
-        self.color1 = [c / 255 for c in self.base_data["colors"]["color1"]]
-        self.color2 = [c / 255 for c in self.base_data["colors"]["color2"]]
-        self.color3 = [c / 255 for c in self.base_data["colors"]["color3"]]
-
-    def open_inf_pop(self, *args):
-        if self.scr_man.current == "page_start":
-            inf_msg = self.base_txt["inf_start"]
-        elif self.scr_man.current == "page_setting":
-            inf_msg = self.base_txt["inf_settings"]
-        popup = Pop_Info(app, inf_msg)
-        popup.open()
 
     def start_user_management(self):
         """
@@ -171,11 +187,9 @@ class MainApp(App):
         Returns: None
         """
         if not self.users_data["user_stat"]:
-            create_user_popup = Pop_Auth_User(app, "register")
-            create_user_popup.open()
+            self.popup_manager.open_usr_man_pop("register")
         elif not self.users_data["login_stat"]:
-            login_user_popup = Pop_Auth_User(app, "login")
-            login_user_popup.open()
+            self.popup_manager.open_usr_man_pop("login")
 
     def get_user_manager(self) -> "UserManager":
         """
@@ -189,6 +203,20 @@ class MainApp(App):
         """
         return self.user_manager
 
+    def get_popup_manager(self) -> "PopupManager":
+        """
+        Provides access to the popup management system for cross-module usage.
+
+        This getter method ensures controlled access to the user manager instance,
+        which handles authentication, user data storage, and session management.
+
+        Returns:
+            UserManager: Singleton instance coordinating user-related operations
+        """
+        return self.popup_manager
+
+    def on_start(self):
+        """Wird aufgerufen, nachdem die App vollständig initialisiert ist"""
     def on_stop(self) -> None:
         """
         Handles application shutdown procedures.
@@ -201,7 +229,7 @@ class MainApp(App):
             Relies on the global USER_MANAGEMENT flag to determine behavior.
         """
         if USER_MANAGEMENT:
-            self.user_manager.change_stat("login_stat",False)
+            self.user_manager.change_stat("login_stat", False)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 from kivy.uix.popup import Popup
 from kivy.lang import Builder
 from constants import DIR_POPS
-from app.services.contr_str import let_upper_first
+from app.services.contr_str import let_up_first
 
 Builder.load_file(DIR_POPS + "pop_info.kv")
 
@@ -16,7 +16,7 @@ class Pop_Info(Popup):
         self.ids.text_label.text = info_msg
 
         # Set close button text
-        self.ids.but_close_popup.text = let_upper_first(
+        self.ids.but_close_popup.text = let_up_first(
             self.app.base_txt["close"]
         )
 

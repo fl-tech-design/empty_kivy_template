@@ -1,35 +1,37 @@
-<Pop_Info@Popup>:
+#pop_error.kv
+<Pop_Error@Popup>:
     auto_dismiss: False
     size_hint: (0.8, 0.5)
     background_color: fs22_n
     title_size: '23sp'
     title_font: constants.DIR_FONTS + "cmunobx.ttf"
-    title_color: fs22_n
-    separator_color: fs22_d
+    title_color: red1
+    separator_color: red1
     separator_height: '4dp'
     ColBoxLayout_1:
         id: box
         orientation: 'vertical'
         padding: [2, 2]  # Extra padding for the box layout
         spacing: 4
-        ColBoxLayout_2:
+        ColBoxLayout_1:
             ScrollView:
                 size_hint: (1, 1)  # Nimmt den gesamten verfügbaren Platz ein
                 bar_width: 10  # Breite der Scrollbar (optional)
                 do_scroll_x: False  # Kein horizontaler Scroll
                 do_scroll_y: True  # Vertikaler Scroll aktivieren
-                Lbl_Small:
-                    id: text_label
-                    text_size: self.width - 8, None  # Textgröße anpassen
-                    font_size: "21sp"
-                    padding: [4, 4]  # Padding um den Text
+                Label:
+                    id: msg_label
                     size_hint_y: None
-                    height: self.texture_size[1]  # Höhe an den Text anpassen
+                    height: self.texture_size[1]  # Höhe passt sich an den Textinhalt an
+                    text_size: self.width, None  # Text bleibt in der Breite begrenzt
+                    font_size: '23dp'
+                    color: [1, 1, 1, 1]  # Weißer Text
                     halign: 'center'
-        ColBoxLayout_1:
+                    valign: 'top'
+        ColBoxLayout_2:
             size_hint_y: 0.15
             padding: 0
             Btn_Clear:
                 id: but_close_popup
                 font_size: self.height * 0.7
-                on_release: root.close_Popup()
+                on_release: root.dismiss()

@@ -1,5 +1,6 @@
-# loading_page.py
-
+# page_load_scr.py
+from constants import USER_MANAGEMENT
+from kivy.app import App
 from kivy.uix.screenmanager import Screen, SlideTransition, NoTransition
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.progressbar import ProgressBar
@@ -8,15 +9,12 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 import time
 
-from app.services.contr_str import let_upper_first
+from app.services.contr_str import let_up_first
 
 
-class LoadingPage(Screen):
+class Page_Load_Scr(Screen):
     def __init__(
         self,
-        app: object,
-        lab_txt: dict,
-        scr_man: object,
         spl_scr: str,
         new_page: str,
         prog_bar_y: float = 0.16,
@@ -35,10 +33,10 @@ class LoadingPage(Screen):
         :param stat_lab_y: Y-position of the status label as a percentage of screen height.
         :param kwargs: Additional arguments for the Screen class.
         """
-        super(LoadingPage, self).__init__(**kwargs)
-        self.app = app
-        self.txt_lab = lab_txt
-        self.scr_man = scr_man
+        super(Page_Load_Scr, self).__init__(**kwargs)
+        self.app = App.get_running_app()  # Holt die MainApp-Instanz
+        self.txt_lab = self.app.base_txt
+        self.scr_man = self.app.scr_man
         self.new_page = new_page
         layout = FloatLayout()
 
@@ -49,7 +47,7 @@ class LoadingPage(Screen):
         # Status label
         self.status_label = Label(
             size_hint=(0.8, 0.1),
-            text=let_upper_first(f'{self.txt_lab["loading"]}'),
+            text=let_up_first(f'{self.txt_lab["loading"]}'),
             font_size=self.height * 0.6,
             pos_hint={"x": 0.1, "y": stat_lab_y},
         )
@@ -81,17 +79,17 @@ class LoadingPage(Screen):
 
         :param dt: Time elapsed between the last frame and the current frame.
         """
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.loading_progress += 10
         self.progress_bar.value = self.loading_progress
-        self.status_label.text = let_upper_first(
+        self.status_label.text = let_up_first(
             f'{self.txt_lab["loading"]}...  {self.loading_progress}%'
         )
         self.status_label.font_size = "42sp"
 
         if self.loading_progress >= 100:
             Clock.unschedule(self.load_data)
-            self.status_label.text = let_upper_first(
+            self.status_label.text = let_up_first(
                 f'{self.txt_lab["loading_complete"]}!'
             )
             Clock.schedule_once(self.go_to_main_screen, 1)
@@ -105,3 +103,6 @@ class LoadingPage(Screen):
         self.scr_man.transition = NoTransition()  # Set NoTransition
         self.scr_man.current = self.new_page
         self.scr_man.transition = SlideTransition()  # Reset to SlideTransition
+        # open the login or register popup()
+        if USER_MANAGEMENT:
+            self.app.start_user_management()

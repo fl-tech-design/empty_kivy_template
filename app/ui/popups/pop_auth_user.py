@@ -1,25 +1,26 @@
 # pop_auth_user.py
-
+from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.core.window import Window
 
-from constants import DIR_POPS
-from app.services.contr_str import let_upper_first
+from constants import DIR_POPS, USER_MANAGEMENT
+from app.services.contr_str import let_up_first
 from app.ui.popups.pop_info import Pop_Info
 
 Builder.load_file(DIR_POPS + "pop_auth_user.kv")
 
 
 class Pop_Auth_User(Popup):
-    def __init__(self, app, mode, **kwargs):
+    def __init__(self, mode, **kwargs):
         super().__init__(**kwargs)
-        self.app = app
+        self.app = App.get_running_app()
         self.mode = mode
-        self.user_manager = app.get_user_manager()
+        if USER_MANAGEMENT:
+            self.user_manager = self.app.get_user_manager()
         Clock.schedule_once(self.set_focus)
-        Window.bind(on_key_down=self.on_key_down)  # Hinzufügen
+        Window.bind(on_key_down=self.on_key_down)
 
         self._update_labels()
 
@@ -31,15 +32,15 @@ class Pop_Auth_User(Popup):
             self.title = self.app.base_txt["login_user"]
             self.ids.lab_inf_create_user.text = self.app.base_txt["inf_login_user"]
 
-        self.ids.inp_username.hint_text = let_upper_first(
+        self.ids.inp_username.hint_text = let_up_first(
             self.app.base_txt["username"]
         )
-        self.ids.inp_passwd.hint_text = let_upper_first(
+        self.ids.inp_passwd.hint_text = let_up_first(
             self.app.base_txt["password"]
         )
 
-        self.ids.but_confirm.text = let_upper_first(self.app.base_txt["confirm"])
-        self.ids.but_chancel.text = let_upper_first(self.app.base_txt["chancel"])
+        self.ids.but_confirm.text = let_up_first(self.app.base_txt["confirm"])
+        self.ids.but_chancel.text = let_up_first(self.app.base_txt["chancel"])
 
     def but_confirm_released(self):
         """
@@ -49,13 +50,13 @@ class Pop_Auth_User(Popup):
         password = self.ids.inp_passwd.text.strip()
 
         if not username:
-            self.ids.inp_username.hint_text = let_upper_first(
+            self.ids.inp_username.hint_text = let_up_first(
                 self.app.base_txt["please_enter_a_username"]
             )
             return
 
         if not password:
-            self.ids.inp_passwd.hint_text = let_upper_first(
+            self.ids.inp_passwd.hint_text = let_up_first(
                 self.app.base_txt["please_enter_a_pw"]
             )
             return

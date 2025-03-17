@@ -1,0 +1,24 @@
+# colored_boxlayout.kv
+<ColoredBoxLayoutBase>:
+    background_color: 0.1, 0.1, 0.1, 1
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<ColBoxLayout_1>:
+    color_key: "col1"
+
+<ColBoxLayout_2>:
+    color_key: "col2"
+
+<ColBoxLayout_3>:
+    color_key: "col3"
+
+<ColBoxLayout_4>:
+    color_key: "col4"
+
+<ColBoxLayout_4>:
+    color_key: "col5"

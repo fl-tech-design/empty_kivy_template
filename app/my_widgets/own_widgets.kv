@@ -1,0 +1,68 @@
+# own_widgets.kv
+#: import constants constants
+###
+
+
+<Logo_Main@Image>:
+    source: constants.PATH_TO_MAINLOGO
+
+
+###
+# vordefinierte Widgets die in die app eingefügt werden können.
+###
+# Languagebox
+<BoxFlag@ColBoxLayout_1>:
+    spacing: 4
+    size_hint_y: None
+    height: "36dp"
+    ColBoxLayout_4:
+        padding: 1
+        ColBoxLayout_2:
+            size_hint_x: 0.25
+            Image:
+                id: img_flag
+        ColBoxLayout_3:
+            Btn_Clear:
+                id: lab_but_flag
+                font_size: "23dp"
+
+# Titelbox
+<BoxTitle@ColBoxLayout_2>:
+    size_hint_y: None
+    height: "40dp"
+    ColBoxLayout_1:
+        size_hint_x: 0.2            
+        Logo_Main:
+    ColBoxLayout_1:
+        Lbl_Big:
+            id: lab_tit_page
+    ColBoxLayout_1:
+        size_hint_x: 0.2
+        Btn_Clear:
+            id: but_info
+            text: "?"
+            halign: 'right'
+###
+# Bottombox
+<BoxBottom@ColBoxLayout_1>:
+    size_hint_y: None
+    height: "40dp"
+    padding: 2
+    ColBoxLayout_1:
+        # Box Button left in Bottombox            
+        Btn_Clear:
+            id: but_1
+            on_release: app.change_screen('left', 'page_setting') if app.scr_man.current == 'page_start' else app.change_screen('right', 'page_start')
+    ColBoxLayout_1:
+        # Box Button right in Bottombox            
+        Btn_Clear:
+            id: but_2
+            on_release: app.stop()
+
+<BoxRed@BoxLayout>:
+    canvas.before:
+        Color:
+            rgb: 1,0,0
+        Rectangle:
+            size: self.size
+            pos: self.pos

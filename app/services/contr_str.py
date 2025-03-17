@@ -1,4 +1,4 @@
-def let_upper_first(str_small: str) -> str:
+def let_up_first(str_small: str) -> str:
     """
     Converts the first character of a string to uppercase.
 

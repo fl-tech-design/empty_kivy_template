@@ -9,6 +9,7 @@
         "create_user": "Benutzer erstellen",
         "delete": "löschen",
         "english": "englisch",
+        "error": "Fehler",
         "exit": "Beenden",
         "german": "deutsch",
         "information": "Information",
@@ -29,6 +30,7 @@
         "settings": "Einstellungen",
         "tit_page_sett": "Einstellungen",
         "tit_page_start": "Startseite",
+        "user_management": "Benutzermanagement",
         "username": "benutzername",
         "welcome_message": "Willkommen bei unserer App!"
     },
@@ -42,6 +44,7 @@
         "create_user": "Create User",
         "delete": "delete",
         "english": "english",
+        "error": "error",
         "exit": "Exit",
         "german": "german",
         "information": "Information",
@@ -59,9 +62,10 @@
         "please_enter_a_username": "Please enter a username",
         "please_enter_a_pw": "Please enter a password with at least 8 characters!",
         "res_u_data": "Reset user data",
-        "settings": "Settings",
+        "settings": "settings",
         "tit_page_sett": "Settings",
         "tit_page_start": "Startpage",
+        "user_management": "usermanagement",
         "username": "username",
         "welcome_message": "Welcome to our app!"
     }

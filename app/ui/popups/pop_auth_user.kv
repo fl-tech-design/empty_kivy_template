@@ -7,15 +7,15 @@
     title_color: fs22_n
     separator_color: fs22_d
     separator_height: '4dp'
-    BoxUnlined:
+    ColBoxLayout_1:
         orientation: 'vertical'
         padding: 2
         spacing: 4
-        BoxLined_1:
+        ColBoxLayout_4:
             orientation: 'vertical'
             padding: 2
             spacing: 2
-            BoxLined_1:
+            ColBoxLayout_2:
                 Lbl_Small:
                     id: lab_inf_create_user
                     size_hint: (1, None)
@@ -24,17 +24,17 @@
                     halign: 'center'
                     valign: 'middle'
                     font_size: "25dp"
-            BoxLined_1:
+            ColBoxLayout_2:
                 size_hint_y: None 
                 height: "40dp"
                 TextInput:
                     id: inp_username
                     multiline: False
                     font_size: "23dp"
-            BoxLined_1:
+            ColBoxLayout_2:
                 size_hint_y: None
                 height: "42dp"
-                BoxLayout:
+                ColBoxLayout_2:
                     TextInput:
                         id: inp_passwd
                         password: True  # Initial versteckt
@@ -46,19 +46,21 @@
                         width: "34dp"
                         text: " " if self.state == "normal" else "X"
                         on_release: inp_passwd.password = not self.state == "down"
-            BoxLined_2:
+            ColBoxLayout_1:
                 orientation: "vertical"
-                padding: 4
-                spacing: 8
-                BoxLined_2:
-                    height: "40dp"
-                    Btn_Clear:
-                        id: but_confirm
-                        on_release: root.but_confirm_released()
-                BoxLined_2:
-                    height: "40dp"
-                    Btn_Clear:
-                        id: but_chancel
-                        on_release: root._close_popup()
+                padding: 2
+                ColBoxLayout_4:
+                    padding: 2
+                    spacing: 8
+                    ColBoxLayout_2:
+                        height: "40dp"
+                        Btn_Clear:
+                            id: but_confirm
+                            on_release: root.but_confirm_released()
+                    ColBoxLayout_2:
+                        height: "40dp"
+                        Btn_Clear:
+                            id: but_chancel
+                            on_release: root._close_popup()
                     
             
