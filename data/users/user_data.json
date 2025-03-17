@@ -1,14 +1,5 @@
 {
-    "user_stat": true,
+    "user_stat": false,
     "login_stat": false,
-    "users": {
-        "a": "$2b$12$HanI8dLiN1kMThzoMlrmAe8jmU7vOWKGr4rMFne4Mp80O1DQMww1C",
-        "b": "$2b$12$5fFe8AL7MgkQABQ/EGVe2ucDcPZXXvFwMY3uZXmQWx7z0QZ4Fj9NC",
-        "c": "$2b$12$e5IobvW85t71TV/bmN1XvuSQkmObXF3rmU/UuF.TQmel73O8UHIoS",
-        "d": "$2b$12$pEZpfhDV1zr3DmOmKwkMQOi5azlVxYWG7.1VmM.p8iIkYqku3ACf.",
-        "e": "$2b$12$nOReKbtoL6AmzpfNUtLRwOayWbjTAzqQbPiFI7Lj.yrxS84Toy8QC",
-        "q": "$2b$12$ydhH5hxMIQD8qDvuSQXMbe3AX1GVW.G.D5EsHAoSudvazY2pDT43W",
-        "1": "$2b$12$Jf2NdEiosxCySI61Q8qNGunR3u5m.Vov5AGL4cuq17TpfCZ00Lr5y",
-        "e1": "$2b$12$dCuk.bnqYfdSfIKe.iQxnOPZFYdnCn/ozzepKOQFy1DB.eJs3OX1q"
-    }
+    "users": {}
 }

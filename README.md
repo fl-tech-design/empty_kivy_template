@@ -1,79 +1,116 @@
-# EmptyKivyTemplate v1.0
+# EmptyKivyTemplate v1.1
 
 ## Overview
-This is a basic template for a Kivy application that features a simple home screen with two buttons leading to settings pages, where language can be adjusted.
+This is a clean and minimal template for Kivy applications, designed to serve as a starting point for new projects. It includes essential features such as language selection, theme switching (light/dark mode), and optional user management (login/register functionality). The template is highly modular, making it easy to customize and extend for your specific needs.
+
+
+---
 
 ## Features
-- **Home Screen:** Displays two buttons leading to different settings.
-- **Settings Page:** Allows language adjustment.
+- **Home Screen:** Displays buttons leading to different pages or actions.
+- **Settings Page:** Allows users to:
+  - Change the application language (e.g., German/English).
+  - Switch between light and dark themes.
+- **User Management (Optional):**  
+  - Enable or disable user management via the `USER_MANAGEMENT` flag in `constants.py`.
+  - Includes login/register functionality and user data reset.
+- **Dynamic UI Updates:**  
+  - Texts, images, and themes are dynamically updated based on user preferences.
+- **Logger Integration:**  
+  - Built-in logging for debugging and error tracking.
+
+---
 
 ## Requirements
-- Python 3.10
-- Kivy 2.3.0
+- Python 3.10+
+- Kivy 2.3.0+
+- Bcrypt 4.3.0+
+- Other dependencies listed in `requirements.txt`
+
+---
+
 ## Installation
 
-1. **Clone the repository:**
-   ```bash
-    git clone https://github.com/fl-tech-design/empty_kivy_template.git
-    cd empty_kivy_template
+### 1. Clone the Repository
+```bash
+git clone https://github.com/fl-tech-design/empty_kivy_template.git
+cd empty_kivy_template
+```
 
-2. **Create a virtual environment (optional but recommended):**
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # On Windows, use venv\Scripts\activate
+### 2. Create a Virtual Environment (Optional but Recommended)
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+```
 
-3. **Install the required dependencies:**
-    ```bash
-    pip install -r requirements.txt
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-4. **Run the application:**
-    ```bash
-    python3 main.py
-
+### 4. Run the Application
+```bash
+python3 main.py
+```
 ## Usage
-**Working with the Repository**  
-When you clone this repository, you are downloading all the necessary files to work with the basic template, including the .git directory, which contains the version control history.  
 
-If you want to use this template as a base for your own project, you can do the following:
+### Working with the Repository
 
-1. **Start a New Git Repository:**  
-    If you want to create your own separate project, you can remove the existing Git history and initialize a new repository:
-    ```bash
-    # Remove the existing .git directory, which contains the version history 
-    # and all Git-related metadata. This effectively disconnects your local 
-    # copy from the original repository.
-    rm -rf .git
+When you clone this repository, you are downloading all the necessary files to work with the basic template, including the .git directory, which contains the version control history.
 
-    # Initialize a new Git repository in the current directory. 
-    # This creates a new .git directory and starts tracking changes.
-    git init
+### Start a New Git Repository
 
-    # Add all files in the current directory to the staging area. 
-    # This prepares them to be included in the next commit.
-    git add .
+If you want to use this template as a base for your own project, you can remove the existing Git history and initialize a new repository:
 
-    # Create a new commit with the message "Initial commit". 
-    # This saves the current state of the files in the repository.
-    git commit -m "Initial commit"
-2. **Push to Your Own GitHub Repository:**  
+```bash
+# Remove the existing .git directory
+rm -rf .git
+
+# Initialize a new Git repository
+git init
+
+# Add all files to the staging area
+git add .
+
+# Commit the changes
+git commit -m "Initial commit"
+```
+
+### Push to Your Own GitHub Repository
 After creating your own Git repository, you can push it to a new GitHub repository:
-    ```bash
-    # Link your local repository to a remote repository hosted on a platform 
-    # like GitHub. Replace <your-repo-url> with the actual URL of your new remote repository.
-    git remote add origin <your-repo-url>
 
-    # Push the changes from your local repository to the remote repository. 
-    # The `-u` flag sets the upstream tracking, so future pushes can be done 
-    # simply with `git push`.
-    git push -u origin main
-## Forking and Contributions
+```bash
+# Link your local repository to a remote repository
+git remote add origin <your-repo-url>
 
-Forks of this repository are welcome, but please note the following guidelines:
+# Push the changes to the remote repository
+git push -u origin main
+```
 
-- **Forking Purpose**: This repository is intended to serve as a minimal template for Kivy applications. Forks should be focused on improving the existing base code (e.g., bug fixes, optimizations, or enhancements to existing functionality).
-  
-- **Pull Requests**: Pull requests are welcome if they improve the existing functionality of the base code. However, any pull requests that introduce additional features or app-specific logic will be declined. The goal of this repository is to remain a clean and simple starting point for new Kivy applications.
+## Key Features Explained
 
-- **General Rule**: If you wish to extend or customize this template for a specific project, please do so in your own fork. The main repository will only include improvements that maintain the template’s status as a bare-bones foundation.
+### 1. Theme Switching (Light/Dark Mode)
+The application supports dynamic theme switching between light and dark modes. This is achieved by updating the theme manager and refreshing the UI elements accordingly. The current theme is stored and applied globally.
 
-Thank you for understanding and contributing within these guidelines!
+To switch themes, navigate to the Settings Page and select either "Light" or "Dark" from the theme options.
+
+### 2. Language Selection
+Users can choose between multiple languages (e.g., German and English). The selected language is stored in the application's configuration and dynamically updates all text elements.
+
+Language flags are displayed on the Settings Page , and clicking on a flag switches the application language.
+
+### 3. User Management (Optional)
+User management can be enabled or disabled via the USER_MANAGEMENT flag in constants.py. When enabled, the application provides the following features:
+
+Login/Register Functionality: Users can create accounts or log in to existing ones.
+User Data Reset: Administrators can reset all user data to the default state.
+Persistent User Status: The application tracks login status and user preferences.
+
+To enable user management, set USER_MANAGEMENT = True in constants.py.
+
+## Screenshots
+![Home Screen](data/base/base_images/home_screen.png)  
+*Figure 1: Home Screen with Buttons*
+
+![Settings Page](data/base/base_images/setting_screen.png)  
+*Figure 2: Settings Page with Language Selection and Theme Switching*

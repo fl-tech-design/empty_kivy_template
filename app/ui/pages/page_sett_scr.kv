@@ -1,81 +1,119 @@
-#page_sett_scr.kv
 #: import constants constants
+
 <Page_Settings>:
     BoxLayout:
         orientation: 'vertical'
-# Titelbox aus dem fil own_widgets.kv
+
+        # Titelbox aus dem file own_widgets.kv
         BoxTitle:
             id: t_box_sett
+
+        # Titel Sprachauswahl
         ColBoxLayout_1:
-            size_hint_y: None 
+            size_hint_y: None
             height: "40dp"
-            # Label für Titel Sprachauswahl                
             Lbl_Big:
-                id: lab_tit_lang
+                id: lab_tit_lang  # Label für den Titel der Sprachauswahl
+        # Flaggenbox
         ColBoxLayout_1:
             orientation: 'vertical'
-            size_hint_y: None 
-            height: "80dp"
+            size_hint_y: None
+            height: "90dp"
             padding: 4, 0, 4, 0
             spacing: 2
-# Box für die erste Sprache
+
+            # Box für die erste Sprache (z.B. Deutsch)
             BoxFlag:
                 id: b_flag_1
-# Box für die zweite Sprache
+
+            # Box für die zweite Sprache (z.B. Englisch)
             BoxFlag:
                 id: b_flag_2
-# Themes managerbox
-        Lbl_Big:
-            id: lbl_themes
-            text: "Themes"
-        ColBoxLayout_3:
-            size_hint_y: None 
-            height: "40dp"
-            ColBoxLayout_2:
-                Btn_Clear:
-                    text: "Light"
-                    on_release: app.change_theme("light")
-            ColBoxLayout_2:
-                Btn_Clear:
-                    text: "Dark"
-                    on_release: app.change_theme("dark")
-# usermanagementbox
+
+        # Box Themes
+        ColBoxLayout_1:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: "90dp"
+            padding: 4, 0, 4, 0
+            spacing: 2
+
+            # Titel Themes 
+            Lbl_Big:
+                id: lbl_themes
+                text: "Themes"
+
+            ColBoxLayout_3:
+                size_hint_y: None
+                height: "40dp"
+                padding: 4, 2, 4, 2
+                spacing: 4
+                # Light Theme Button
+                ColBoxLayout_1:
+                    padding: 2
+                    ColBoxLayout_2:
+                        Btn_Clear:
+                            text: "Light"
+                            on_release: app.change_theme("light")
+
+                # Dark Theme Button
+                ColBoxLayout_1:
+                    padding: 2
+                    ColBoxLayout_2:
+                        Btn_Clear:
+                            text: "Dark"
+                            on_release: app.change_theme("dark")
+
+        # User Management
         ColBoxLayout_1:
             orientation: 'vertical'
             padding: 10, 0, 10, 2
             spacing: 5
-            ColBoxLayout_2:
-                size_hint_y: None 
+
+            # Titel für User Management
+            ColBoxLayout_1:
+                size_hint_y: None
                 height: "30dp"
                 Lbl_Big:
                     id: lab_tit_usr_man
-# Box create_new_user
+
+            # Box für das Hinzufügen eines neuen Benutzers
             ColBoxLayout_2:
                 size_hint_y: None
                 height: "30dp"
-                ColBoxLayout_4:
+                padding: 2
+                ColBoxLayout_3:
                     padding: 0, 2, 0, 2
                     Lbl_Small:
                         id: lbl_add_new_user
-                ColBoxLayout_3:
-                    Btn_Clear:
-                        id: btn_add_new_user
-                        on_release: root.add_new_user()
-# Box reset_userdata
+                ColBoxLayout_1:
+                    padding: 2
+                    ColBoxLayout_4:
+                        Btn_Clear:
+                            id: btn_add_new_user
+                            on_release: root.add_new_user()
+
+            # Box für das Zurücksetzen von Benutzerdaten
             ColBoxLayout_2:
                 size_hint_y: None
                 height: "30dp"
-                ColBoxLayout_2:
+                padding: 2
+                ColBoxLayout_3:
                     padding: 0, 2, 0, 2
                     Lbl_Small:
                         id: lbl_res_u_data
-                    ColBoxLayout_3:
+                ColBoxLayout_1:
+                    padding: 2
+                    ColBoxLayout_5:
                         Btn_Clear:
                             id: btn_res_u_data
                             on_release: root.reset_userdata()
-        ColBoxLayout_2:
+
+        # Abstandshalter
+        ColBoxLayout_1:
             size_hint_y: None
             height: "10dp"
-# Box Fusszeile    
-            BoxBottom:
-                id: b_box_settings
+
+        # Fußzeile
+        BoxBottom:
+            id: b_box_settings

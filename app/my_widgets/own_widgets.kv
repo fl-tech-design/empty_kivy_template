@@ -51,20 +51,28 @@
             halign: 'right'
 ###
 # Bottombox
-<BoxBottom@ColBoxLayout_1>:
+<BoxBottom@ColBoxLayout_2>:
     size_hint_y: None
     height: "40dp"
-    padding: 2
+    spacing: 4
     ColBoxLayout_1:
-        # Box Button left in Bottombox            
-        Btn_Clear:
-            id: but_1
-            on_release: app.change_screen('left', 'page_setting') if app.scr_man.current == 'page_start' else app.change_screen('right', 'page_start')
-    ColBoxLayout_1:
-        # Box Button right in Bottombox            
-        Btn_Clear:
-            id: but_2
-            on_release: app.stop()
+        padding: 4, 2, 4, 2
+        ColBoxLayout_2:
+            padding: 2
+            # Box Button left in Bottombox            
+            ColBoxLayout_1:
+                padding: 4, 2, 4, 2
+                Btn_Clear:
+                    id: but_1
+                    on_release: app.change_screen('left', 'page_setting') if app.scr_man.current == 'page_start' else app.change_screen('right', 'page_start')
+        ColBoxLayout_2:
+            padding: 2
+            ColBoxLayout_1:
+                padding: 4, 2, 4, 2
+                # Box Button right in Bottombox            
+                Btn_Clear:
+                    id: but_2
+                    on_release: app.stop()
 
 <BoxRed@BoxLayout>:
     canvas.before:
