@@ -1,38 +1,45 @@
 # own_widgets.kv
 #: import constants constants
-###
-
 
 <Logo_Main@Image>:
-    source: constants.PATH_TO_MAINLOGO
+    source: constants.PATH_TO_MAINLOGO_D
 
 
-###
-# vordefinierte Widgets die in die app eingefügt werden können.
-###
 # Languagebox
 <BoxFlag@ColBoxLayout_1>:
+    padding: 1
     spacing: 4
     size_hint_y: None
     height: "36dp"
     ColBoxLayout_4:
         padding: 1
-        ColBoxLayout_2:
-            size_hint_x: 0.25
-            Image:
-                id: img_flag
-        ColBoxLayout_3:
-            Btn_Clear:
-                id: lab_but_flag
-                font_size: "23dp"
+        ColBoxLayout_1:
+            padding: 1
+            # imagebox
+            ColBoxLayout_2:
+                size_hint_x: 0.25
+                padding: 0, 2, 0, 2
+                Image:
+                    id: img_flag
+            # buttonbox
+            ColBoxLayout_2:
+                padding: 2
+                ColBoxLayout_1:
+                    padding: 2
+                    ColBoxLayout_3:
+                        Btn_Clear:
+                            id: but_flag
+                            font_size: "21dp"
 
 # Titelbox
 <BoxTitle@ColBoxLayout_2>:
     size_hint_y: None
     height: "40dp"
     ColBoxLayout_1:
-        size_hint_x: 0.2            
+        size_hint_x: 0.2
+        padding: 0, 3, 0, 3           
         Logo_Main:
+            id: img_logo_main
     ColBoxLayout_1:
         Lbl_Big:
             id: lab_tit_page

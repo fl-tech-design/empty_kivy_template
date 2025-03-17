@@ -1,45 +1,27 @@
-# main.py
+"""
+Main entry point for the Kivy application.
+
+This script initializes the application, loads necessary resources,
+and manages the main application logic, including screen management,
+theme handling, and user management.
+"""
+
 from constants import (
     LIST_KV_FILES,
     SPL_SCREEN_START_APP,
-    DATA_BASE,
-    TXT_BASE,
-    DATA_USERS,
+    BASE_DATA,
+    BASE_TXT,
+    USERS_DATA,
     APP_TITLE,
-    CONFIG_STAT,
     USER_MANAGEMENT,
 )
 
-## configuration of kivy
-from kivy.config import Config
+# Import configuration setup
+from app.services.app_config import start_app_config
 
-
-def config_win_size(h: str = "850", w: str = "850") -> None:
-    """
-    Configure Kivy window dimensions and resizable state.
-
-    Sets the initial window size and enables/disables resizing capability.
-    Must be called BEFORE creating the App instance to take effect.
-    Configuration is persisted to the Kivy config file.
-
-    Args:
-        h (str): Window height in pixels (default: "850")
-        w (str): Window width in pixels (default: "850")
-
-    Example:
-        config_win_size("1080", "1920")  # Sets 1920x1080 window
-    """
-    Config.set("graphics", "resizable", "1")
-    Config.set("graphics", "height", h)
-    Config.set("graphics", "width", w)
-    Config.write()
-
-
-if CONFIG_STAT:
-    config_win_size()
+start_app_config()
 
 # Imports of basic packages
-
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
@@ -49,20 +31,27 @@ from kivy.clock import Clock
 from app.services.data_manager import read_from_json
 from app.services.user_manager import UserManager
 from app.services.popup_manager import PopupManager
+from app.services.theme_manager import ThemeManager
+from app.services.logger_config import setup_logger
 
 # Import pages
 from app.ui.pages.page_load_scr import Page_Load_Scr
-from app.ui.pages.page_main_scr import StartPage
-from app.ui.pages.page_sett_scr import SettingPage
+from app.ui.pages.page_main_scr import Page_Start
+from app.ui.pages.page_sett_scr import Page_Settings
 
+# Import custom widgets
+# These imports are required for Kivy to register the custom widgets used in .kv files.
+# Even though they are not directly used in this file, removing them will cause a FactoryException.
 from app.my_widgets.colored_boxlayout import (
     ColBoxLayout_1,
     ColBoxLayout_2,
     ColBoxLayout_3,
+    ColBoxLayout_4,
+    ColBoxLayout_5,
     ColoredBoxLayoutBase,
 )
-from app.services.theme_manager import ThemeManager
-from app.my_widgets.themed_widgets import Lbl_Big, Btn_Clear  # Pfad anpassen!
+from app.my_widgets.themed_widgets import Lbl_Big, Btn_Clear  # Required for dynamic widget creation in .kv files
+
 
 # Load all KV files
 for kv_file in LIST_KV_FILES:
@@ -72,18 +61,19 @@ for kv_file in LIST_KV_FILES:
 class MainApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Sicherheit: theme_manager als Instanzattribut initialisieren
-        self.base_data, self.base_txt, self.users_data = {}, {}, {}
+        self.logger = setup_logger()
+        self.base_data: dict = {}
+        self.base_txt: dict = {}
+        self.users_data: dict = {}
         self.load_app_data()
+
         if not hasattr(self, "theme_manager"):
             self.theme_manager = ThemeManager()
-        self.popup_manager = PopupManager()
-        # Optional: Standard-Theme setzen
+        if not hasattr(self, "popup_manager"):
+            self.popup_manager = PopupManager()
         if USER_MANAGEMENT:
-            self.user_manager = UserManager()
+            self.usr_man = UserManager()
 
-
-        
     def build(self) -> ScreenManager:
         """
         Builds the main application interface.
@@ -94,20 +84,14 @@ class MainApp(App):
             ScreenManager: The main ScreenManager for the application.
         """
         self.title = APP_TITLE
-
-
-
-
         self.scr_man = ScreenManager()
-
-
         return self._create_screen_manager()
 
     def _create_screen_manager(self) -> ScreenManager:
         """
         Creates and configures the ScreenManager.
 
-        Adds the initial screens (Page_Load_Scr, StartPage, and SettingPage) to the ScreenManager.
+        Adds the initial screens (Page_Load_Scr, Page_Start, and Page_Settings) to the ScreenManager.
 
         Returns:
             ScreenManager: The configured ScreenManager.
@@ -120,37 +104,18 @@ class MainApp(App):
         )
         self.scr_man.add_widget(self.spl_scr_start)
 
-        # Erstelle die StartPage
+        # Create the Page_Start
         self.start_page = Screen(name="page_start")
-        self.start_page.add_widget(StartPage())
+        self.start_page.add_widget(Page_Start())
         self.scr_man.add_widget(self.start_page)
         Clock.schedule_once(lambda dt: self.start_page.children[0].upd_page(), 0)
 
-        # Erstelle die SettingPage
+        # Create the Page_Settings
         self.setting_page = Screen(name="page_setting")
-        self.setting_page.add_widget(SettingPage(app))
+        self.setting_page.add_widget(Page_Settings())
         self.scr_man.add_widget(self.setting_page)
 
-        Clock.schedule_once(self._apply_initial_theme, 0)
-
         return self.scr_man
-
-    def _apply_initial_theme(self, *args):
-        """Rekursiv alle Widgets durchsuchen und Theme anwenden"""
-        root = self.root
-        if root:
-            self._traverse_widgets(root, self._update_theme_colors)
-
-    def _traverse_widgets(self, widget, callback):
-        """Rekursive Widget-Traversal"""
-        callback(widget)
-        for child in widget.children:
-            self._traverse_widgets(child, callback)
-
-    def _update_theme_colors(self, widget):
-        """Theme-Update für kompatible Widgets"""
-        if hasattr(widget, "update_theme_colors"):
-            widget.update_theme_colors()
 
     def change_screen(self, new_transition: str, new_scr_name: str) -> None:
         """
@@ -165,21 +130,26 @@ class MainApp(App):
         new_screen = self.scr_man.get_screen(new_scr_name)
         Clock.schedule_once(lambda dt: new_screen.children[0].upd_page(), 0)
 
-    def change_theme(self, theme_name):
+    def change_theme(self, theme_name: str) -> None:
+        """
+        Changes the application's theme.
+
+        Args:
+            theme_name (str): The name of the theme to apply.
+        """
         self.theme_manager.change_theme(theme_name)
 
     def load_app_data(self) -> None:
         """
-        load base data in the app.
+        Load base data into the app.
 
         Loads the colors and text data, and converts color values from 0-255 to 0-1 range.
         """
-        # Store the loaded colors as instance variables
-        self.base_data = read_from_json(DATA_BASE)
-        self.base_txt = read_from_json(TXT_BASE)[self.base_data["curr_lang"]]
-        self.users_data = read_from_json(DATA_USERS)
+        self.base_data = read_from_json(BASE_DATA)
+        self.base_txt = read_from_json(BASE_TXT)[self.base_data["curr_lang"]]
+        self.users_data = read_from_json(USERS_DATA)
 
-    def start_user_management(self):
+    def start_user_management(self) -> None:
         """
         If USER_MANAGEMENT == True, user management is activated and this function
         controls which user status is active and opens the corresponding pop-up.
@@ -191,7 +161,7 @@ class MainApp(App):
         elif not self.users_data["login_stat"]:
             self.popup_manager.open_usr_man_pop("login")
 
-    def get_user_manager(self) -> "UserManager":
+    def get_usr_man(self) -> "UserManager":
         """
         Provides access to the user management system for cross-module usage.
 
@@ -201,9 +171,9 @@ class MainApp(App):
         Returns:
             UserManager: Singleton instance coordinating user-related operations
         """
-        return self.user_manager
+        return self.usr_man
 
-    def get_popup_manager(self) -> "PopupManager":
+    def get_pop_man(self) -> "PopupManager":
         """
         Provides access to the popup management system for cross-module usage.
 
@@ -211,12 +181,10 @@ class MainApp(App):
         which handles authentication, user data storage, and session management.
 
         Returns:
-            UserManager: Singleton instance coordinating user-related operations
+            PopupManager: Singleton instance coordinating user-related operations
         """
         return self.popup_manager
 
-    def on_start(self):
-        """Wird aufgerufen, nachdem die App vollständig initialisiert ist"""
     def on_stop(self) -> None:
         """
         Handles application shutdown procedures.
@@ -229,7 +197,7 @@ class MainApp(App):
             Relies on the global USER_MANAGEMENT flag to determine behavior.
         """
         if USER_MANAGEMENT:
-            self.user_manager.change_stat("login_stat", False)
+            self.usr_man.change_stat("login_stat", False)
 
 
 if __name__ == "__main__":

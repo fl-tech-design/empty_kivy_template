@@ -11,6 +11,8 @@ class Pop_Info(Popup):
         super(Pop_Info, self).__init__(**kwargs)
         self.app = app
         self.title = f'{self.app.base_txt["information"]}'
+        self.width = "400dp"
+        self.height = "400dp"
 
         # Set the message for the label
         self.ids.text_label.text = info_msg

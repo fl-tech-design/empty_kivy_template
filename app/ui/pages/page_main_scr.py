@@ -9,24 +9,24 @@ from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 
 
-class StartPage(Screen):
+class Page_Start(Screen):
     def __init__(self, **kwargs: Dict[str, Any]):
         """
-        Initializes the StartPage screen.
+        Initializes the Page_Start screen.
 
         Args:
             app (App): The main application instance.
             **kwargs: Additional keyword arguments passed to the Screen constructor.
         """
-        super(StartPage, self).__init__(**kwargs)
+        super(Page_Start, self).__init__(**kwargs)
         self.app = App.get_running_app()  # Holt die MainApp-Instanz
-        self.pop_man = self.app.get_popup_manager()
+        self.pop_man = self.app.get_pop_man()
         self.btn_binds()
         Clock.schedule_once(lambda *args: self.ids.t_box_start.update_theme_colors())
 
     def upd_page(self, *args):
         """
-        Updates the StartPage screen with new text values from the app's base_txt dictionary.
+        Updates the Page_Start screen with new text values from the app's base_txt dictionary.
 
         Args:
             *args: Additional arguments that might be passed when calling this method.

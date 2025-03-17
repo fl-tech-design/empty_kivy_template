@@ -15,7 +15,9 @@ VERSION_NR: str = "0.0.1"
 
 APP_TITLE: str = "neue App"
 """The title of the application."""
-
+APP_BG: List[float] = [0.1, 0.1, 0.1, 1]
+POP_TITLE: List[float] = [0.1, 0.1, 0.8, 1]
+POP_SEPARATOR: List[float] = [0.1, 0.1, 0.4, 1]
 # Configuration flags
 CONFIG_STAT: bool = False
 """A flag indicating the status of the configuration (True if configured, False otherwise)."""
@@ -24,10 +26,10 @@ USER_MANAGEMENT: bool = True
 """A flag indicating whether user management is enabled in the application."""
 
 # Data base paths
-DATA_BASE: str = os.path.join(os.path.dirname(__file__), "data/base/base_data.json")
+BASE_DATA: str = os.path.join(os.path.dirname(__file__), "data/base/base_data.json")
 """Path to the base JSON data file."""
 
-TXT_BASE: str = os.path.join(os.path.dirname(__file__), "data/base/base_txt.json")
+BASE_TXT: str = os.path.join(os.path.dirname(__file__), "data/base/base_txt.json")
 """Path to the base text JSON file."""
 
 DATA_APP: str = os.path.join(os.path.dirname(__file__), "data/app/app_data.json")
@@ -36,7 +38,7 @@ DATA_APP: str = os.path.join(os.path.dirname(__file__), "data/app/app_data.json"
 TXT_APP: str = os.path.join(os.path.dirname(__file__), "data/app/app_txt.json")
 """Path to the application-specific text JSON file."""
 
-DATA_USERS: str = os.path.join(os.path.dirname(__file__), "data/users/user_data.json")
+USERS_DATA: str = os.path.join(os.path.dirname(__file__), "data/users/user_data.json")
 """Path to the user data JSON file."""
 
 # Directory paths
@@ -53,10 +55,9 @@ DIR_POPS: str = os.path.join(os.path.dirname(__file__), "app/ui/popups/")
 """Directory containing popup-related resources."""
 
 LIST_KV_FILES: List[str] = [
-    "data/base/colors.kv",
+    "app/my_widgets/colored_boxlayout.kv",
     "app/my_widgets/themed_widgets.kv",
     "app/my_widgets/own_widgets.kv",
-    "app/my_widgets/colored_boxlayout.kv",
     "app/ui/pages/page_main_scr.kv",
     "app/ui/pages/page_sett_scr.kv",
 ]
@@ -67,5 +68,7 @@ SPL_SCREEN_START_APP: str = os.path.join(
 )
 """Path to the splash screen image displayed at the start of the application."""
 
-PATH_TO_MAINLOGO: str = os.path.join(os.path.dirname(__file__), "data/base/base_images/logo_main.png")
+PATH_TO_MAINLOGO_D: str = os.path.join(os.path.dirname(__file__), "data/base/base_images/logo_main_d.png")
+"""Path to the main logo image of the application."""
+PATH_TO_MAINLOGO_L: str = os.path.join(os.path.dirname(__file__), "data/base/base_images/logo_main_l.png")
 """Path to the main logo image of the application."""

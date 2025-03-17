@@ -80,7 +80,7 @@ class ColBoxLayout_4(ColoredBoxLayoutBase):
     pass
 
 
-class ColBoxLayout_4(ColoredBoxLayoutBase):
+class ColBoxLayout_5(ColoredBoxLayoutBase):
     """boxlayout for foreground 2 to make lines"""
 
     pass

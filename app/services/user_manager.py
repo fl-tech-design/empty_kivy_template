@@ -2,7 +2,7 @@
 from typing import Dict, Any
 from datetime import datetime
 
-from constants import DATA_USERS, DIR_USERFILES
+from constants import USERS_DATA, DIR_USERFILES
 
 from app.services.logger_config import setup_logger
 logger = setup_logger()
@@ -20,7 +20,7 @@ class UserManager:
         Loads user data from the configured JSON file, creates default
         data structure if the file doesn't exist.
         """
-        self.data_file: str = DATA_USERS  # Path to user data file
+        self.data_file: str = USERS_DATA  # Path to user data file
         self.data: Dict[str, Any] = self._load_data()
 
     def _load_data(self) -> Dict[str, Any]:

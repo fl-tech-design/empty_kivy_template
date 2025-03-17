@@ -1,6 +1,6 @@
-#settingpage.kv
+#page_sett_scr.kv
 #: import constants constants
-<SettingPage>:
+<Page_Settings>:
     BoxLayout:
         orientation: 'vertical'
 # Titelbox aus dem fil own_widgets.kv
@@ -20,10 +20,10 @@
             spacing: 2
 # Box für die erste Sprache
             BoxFlag:
-                id: box_flag_1
+                id: b_flag_1
 # Box für die zweite Sprache
             BoxFlag:
-                id: box_flag_2
+                id: b_flag_2
 # Themes managerbox
         Lbl_Big:
             id: lbl_themes
@@ -49,7 +49,7 @@
                 height: "30dp"
                 Lbl_Big:
                     id: lab_tit_usr_man
-                # Box create_new_user
+# Box create_new_user
             ColBoxLayout_2:
                 size_hint_y: None
                 height: "30dp"
@@ -61,7 +61,7 @@
                     Btn_Clear:
                         id: btn_add_new_user
                         on_release: root.add_new_user()
-                # Box reset_userdata
+# Box reset_userdata
             ColBoxLayout_2:
                 size_hint_y: None
                 height: "30dp"

@@ -1,11 +1,14 @@
+#: import constants constants
+
 <Pop_Info@Popup>:
+    id: pop_err
     auto_dismiss: False
-    size_hint: (0.8, 0.5)
-    background_color: fs22_n
+    size_hint: None
+    background_color: constants.APP_BG
     title_size: '23sp'
     title_font: constants.DIR_FONTS + "cmunobx.ttf"
-    title_color: fs22_n
-    separator_color: fs22_d
+    title_color: constants.POP_TITLE
+    separator_color: constants.POP_SEPARATOR
     separator_height: '4dp'
     ColBoxLayout_1:
         id: box

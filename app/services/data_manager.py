@@ -1,7 +1,7 @@
 # data_manager.py
 import json
 from typing import Dict, Any
-from constants import DATA_BASE
+from constants import BASE_DATA
 from app.services.logger_config import setup_logger
 
 logger = setup_logger()
@@ -14,10 +14,10 @@ def save_base_data(data: Dict[str, Any]) -> None:
     :param data: Die Daten, die in der JSON-Datei gespeichert werden sollen
     """
     try:
-        with open(DATA_BASE, "w") as file:
+        with open(BASE_DATA, "w") as file:
             json.dump(data, file, indent=4)
     except IOError as e:
-        logger.error(f"Error saving JSON file {DATA_BASE}: {e}")
+        logger.error(f"Error saving JSON file {BASE_DATA}: {e}")
 
 
 def update_base_data(key: str, new_value: Any) -> None:
@@ -27,7 +27,7 @@ def update_base_data(key: str, new_value: Any) -> None:
     :param key: Der Schlüssel des Wertes, der geändert werden soll
     :param new_value: Der neue Wert, der dem Schlüssel zugewiesen werden soll
     """
-    data = read_from_json(DATA_BASE)
+    data = read_from_json(BASE_DATA)
 
     if key in data:
         data[key] = new_value

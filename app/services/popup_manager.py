@@ -11,7 +11,7 @@ from app.ui.popups.pop_error import Pop_Error
 class PopupManager:
     def __init__(self, **kwargs: Dict[str, Any]) -> None:
         """
-        Initialize the SettingPage screen.
+        Initialize the Page_Settings screen.
 
         :param app: The main application instance
         :param kwargs: Additional keyword arguments for Kivy

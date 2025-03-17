@@ -18,7 +18,7 @@ class Pop_Auth_User(Popup):
         self.app = App.get_running_app()
         self.mode = mode
         if USER_MANAGEMENT:
-            self.user_manager = self.app.get_user_manager()
+            self.usr_man = self.app.get_usr_man()
         Clock.schedule_once(self.set_focus)
         Window.bind(on_key_down=self.on_key_down)
 
@@ -63,8 +63,8 @@ class Pop_Auth_User(Popup):
 
         try:
             if self.mode == "login":
-                if self.user_manager.verify_password(username, password):
-                    self.user_manager.change_stat("login_stat", True)
+                if self.usr_man.verify_password(username, password):
+                    self.usr_man.change_stat("login_stat", True)
                     self._close_popup()
                 else:
                     popup_err_login = Pop_Info(
@@ -73,10 +73,10 @@ class Pop_Auth_User(Popup):
                     popup_err_login.open()
 
             elif self.mode == "register":
-                hashed_pw = self.user_manager.hash_password(password)
-                self.user_manager.add_new_user_to_list(username, hashed_pw)
-                self.user_manager.change_stat("user_stat",True)
-                self.user_manager.change_stat("login_stat",True)
+                hashed_pw = self.usr_man.hash_password(password)
+                self.usr_man.add_new_user_to_list(username, hashed_pw)
+                self.usr_man.change_stat("user_stat",True)
+                self.usr_man.change_stat("login_stat",True)
                 self._close_popup()
 
         except Exception as e:
