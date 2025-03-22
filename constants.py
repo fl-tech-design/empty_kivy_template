@@ -22,7 +22,7 @@ POP_SEPARATOR: List[float] = [0.1, 0.1, 0.4, 1]
 CONFIG_STAT: bool = False
 """A flag indicating the status of the configuration (True if configured, False otherwise)."""
 
-USER_MANAGEMENT: bool = False
+USER_MANAGEMENT: bool = True
 """A flag indicating whether user management is enabled in the application."""
 
 # Data base paths

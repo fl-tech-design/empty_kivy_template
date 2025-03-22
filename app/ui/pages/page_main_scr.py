@@ -54,7 +54,7 @@ class Page_Start(Screen):
         their corresponding popup or action logic.
         """
         self.ids.t_box_start.ids.but_info.bind(
-            on_release=lambda instance: self.app.get_popup_manager().open_inf_pop(
+            on_release=lambda instance: self.app.get_pop_man().open_inf_pop(
                 "page_start"
             )
         )

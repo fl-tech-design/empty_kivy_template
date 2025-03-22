@@ -1,38 +1,31 @@
 #: import constants constants
 
 <Pop_Info@Popup>:
-    id: pop_err
-    auto_dismiss: False
-    size_hint: None
     background_color: constants.APP_BG
-    title_size: '23sp'
+    title_size: '18sp'
     title_font: constants.DIR_FONTS + "cmunobx.ttf"
-    title_color: constants.POP_TITLE
-    separator_color: constants.POP_SEPARATOR
-    separator_height: '4dp'
+    title_color: (0.2, 0.2, 1, 1)
+    separator_color: (0.1, 0.1, 0.4, 1)
+    separator_height: '3dp'
     ColBoxLayout_1:
-        id: box
+        id: box_lbl    
         orientation: 'vertical'
-        padding: [2, 2]  # Extra padding for the box layout
-        spacing: 4
-        ColBoxLayout_2:
-            ScrollView:
-                size_hint: (1, 1)  # Nimmt den gesamten verfügbaren Platz ein
-                bar_width: 10  # Breite der Scrollbar (optional)
-                do_scroll_x: False  # Kein horizontaler Scroll
-                do_scroll_y: True  # Vertikaler Scroll aktivieren
-                Lbl_Small:
-                    id: text_label
-                    text_size: self.width - 8, None  # Textgröße anpassen
-                    font_size: "21sp"
-                    padding: [4, 4]  # Padding um den Text
-                    size_hint_y: None
-                    height: self.texture_size[1]  # Höhe an den Text anpassen
-                    halign: 'center'
+        padding: 5
+        spacing: 5
         ColBoxLayout_1:
-            size_hint_y: 0.15
-            padding: 0
-            Btn_Clear:
-                id: but_close_popup
-                font_size: self.height * 0.7
-                on_release: root.close_Popup()
+            #size_hint_y: None
+            Lbl_Big:
+                id: content_label
+                text: root.info_msg
+                height: self.texture_size[1]
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.width, None
+        ColBoxLayout_2:
+            padding: 2
+            size_hint_y: None
+            height: dp(50)
+            ColBoxLayout_3:
+                Btn_Clear_1:
+                    id: btn_close
+                    on_release: root.dismiss()

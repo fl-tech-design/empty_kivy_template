@@ -1,5 +1,7 @@
 {
-    "user_stat": false,
+    "user_stat": true,
     "login_stat": false,
-    "users": {}
+    "users": {
+        "a": "$2b$12$Q0CrdWJaYsm56ctkgoiZfOAxpm8i3F/vdfigJL5PIHYHrJqhRIXKO"
+    }
 }

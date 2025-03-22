@@ -50,7 +50,7 @@ from app.my_widgets.colored_boxlayout import (
     ColBoxLayout_5,
     ColoredBoxLayoutBase,
 )
-from app.my_widgets.themed_widgets import Lbl_Big, Btn_Clear  # Required for dynamic widget creation in .kv files
+from app.my_widgets.themed_widgets import Lbl_Big, Btn_Clear_1  # Required for dynamic widget creation in .kv files
 
 
 # Load all KV files

@@ -1,7 +1,12 @@
+# pop_auth_user.kv
+# User authentication popup dialog
+
+# Imports
 #: import constants constants
 
 <Pop_Auth_User@Popup>:
-    auto_dismiss: False
+    # Popup configuration
+    auto_dismiss: False  # Prevent closing by clicking outside
     size_hint: (0.75, 0.5)
     background_color: constants.APP_BG
     title_size: '23sp'
@@ -9,14 +14,20 @@
     title_color: constants.POP_TITLE
     separator_color: constants.POP_SEPARATOR
     separator_height: '4dp'
+
+    # Main layout container
     ColBoxLayout_1:
         orientation: 'vertical'
         padding: 2
         spacing: 4
+        
+        # Content container
         ColBoxLayout_4:
             orientation: 'vertical'
             padding: 2
             spacing: 2
+            
+            # Information label section
             ColBoxLayout_2:
                 Lbl_Small:
                     id: lab_inf_create_user
@@ -26,6 +37,8 @@
                     halign: 'center'
                     valign: 'middle'
                     font_size: "25dp"
+            
+            # Username input field
             ColBoxLayout_2:
                 size_hint_y: None 
                 height: "40dp"
@@ -33,36 +46,44 @@
                     id: inp_username
                     multiline: False
                     font_size: "23dp"
+            
+            # Password input with visibility toggle
             ColBoxLayout_2:
                 size_hint_y: None
                 height: "42dp"
                 ColBoxLayout_2:
                     TextInput:
                         id: inp_passwd
-                        password: True  # Initial versteckt
+                        password: True  # Initially masked
                         multiline: False
                         font_size: "23dp"
-                        on_text_validate: root.but_confirm_released()  
+                        on_text_validate: root.but_confirm_released()  # Enter key confirmation
+                    
+                    # Password visibility toggle
                     ToggleButton:
                         size_hint_x: None
                         width: "34dp"
-                        text: " " if self.state == "normal" else "X"
+                        text: " " if self.state == "normal" else "X"  # Visual state indicator
                         on_release: inp_passwd.password = not self.state == "down"
+            
+            # Action buttons section
             ColBoxLayout_1:
                 orientation: "vertical"
                 padding: 2
                 ColBoxLayout_4:
                     padding: 2
                     spacing: 8
+                    
+                    # Confirm button
                     ColBoxLayout_2:
                         height: "40dp"
-                        Btn_Clear:
+                        Btn_Clear_1:
                             id: but_confirm
                             on_release: root.but_confirm_released()
+                    
+                    # Close button
                     ColBoxLayout_2:
                         height: "40dp"
-                        Btn_Clear:
-                            id: but_chancel
+                        Btn_Clear_1:
+                            id: but_close
                             on_release: root._close_popup()
-                    
-            

@@ -7,7 +7,7 @@ from kivy.clock import Clock  # Neu hinzugefügt
 
 
 class Lbl_Big(Label):
-    color_key = StringProperty("text_color")  # Neu hinzugefügt
+    color_key = StringProperty("txt_col_1")  # Neu hinzugefügt
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -30,11 +30,11 @@ class Lbl_Big(Label):
         self.color = theme_colors.get(self.color_key, [0, 0, 0, 1])
 
 
-# Gleiche Anpassungen für Lbl_Small und Btn_Clear
+# Gleiche Anpassungen für Lbl_Small und Btn_Clear_1
 
 
 class Lbl_Small(Label):
-    color_key = StringProperty("text_color")
+    color_key = StringProperty("txt_col_1")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -54,8 +54,28 @@ class Lbl_Small(Label):
         self.color = theme_colors.get(self.color_key, [0, 0, 0, 1])
 
 
-class Btn_Clear(Button):
-    color_key = StringProperty("text_color")
+class Btn_Clear_1(Button):
+    color_key = StringProperty("txt_col_1")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self._setup_theme, 0)  # Neu hinzugefügt
+
+    def _setup_theme(self, *args):
+        app = App.get_running_app()
+        if app and hasattr(app, "theme_manager"):
+            self.theme_manager = app.theme_manager
+            self.theme_manager.bind(current_theme=self.update_color)
+            self.update_color()
+
+    def update_color(self, *args):
+        theme_colors = self.theme_manager.themes.get(
+            self.theme_manager.current_theme, {}
+        )
+        self.color = theme_colors.get(self.color_key, [0, 0, 0, 1])
+
+class Btn_Clear_2(Button):
+    color_key = StringProperty("txt_col_2")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

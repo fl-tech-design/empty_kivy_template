@@ -27,7 +27,7 @@
                 ColBoxLayout_1:
                     padding: 2
                     ColBoxLayout_3:
-                        Btn_Clear:
+                        Btn_Clear_1:
                             id: but_flag
                             font_size: "21dp"
 
@@ -45,7 +45,7 @@
             id: lab_tit_page
     ColBoxLayout_1:
         size_hint_x: 0.2
-        Btn_Clear:
+        Btn_Clear_1:
             id: but_info
             text: "?"
             halign: 'right'
@@ -62,7 +62,7 @@
             # Box Button left in Bottombox            
             ColBoxLayout_1:
                 padding: 4, 2, 4, 2
-                Btn_Clear:
+                Btn_Clear_1:
                     id: but_1
                     on_release: app.change_screen('left', 'page_setting') if app.scr_man.current == 'page_start' else app.change_screen('right', 'page_start')
         ColBoxLayout_2:
@@ -70,7 +70,7 @@
             ColBoxLayout_1:
                 padding: 4, 2, 4, 2
                 # Box Button right in Bottombox            
-                Btn_Clear:
+                Btn_Clear_1:
                     id: but_2
                     on_release: app.stop()
 

@@ -3,7 +3,13 @@ This module defines the Page_Settings screen, which allows users to configure ap
 such as language selection, theme management, and user data handling.
 """
 
-from constants import DIR_FLAGS, DIR_USERFILES, USER_MANAGEMENT, PATH_TO_MAINLOGO_D, PATH_TO_MAINLOGO_L
+from constants import (
+    DIR_FLAGS,
+    DIR_USERFILES,
+    USER_MANAGEMENT,
+    PATH_TO_MAINLOGO_D,
+    PATH_TO_MAINLOGO_L,
+)
 
 from typing import Any, Dict
 import os
@@ -53,20 +59,22 @@ class Page_Settings(Screen):
         Updates labels and buttons according to the current language settings
         stored in the application's base_txt dictionary.
         """
-        self.ids.t_box_sett.ids.lab_tit_page.text = self.app.base_txt["tit_page_sett"]
+        base_txt = self.app.base_txt
+        self.ids.t_box_sett.ids.lab_tit_page.text = let_up_first(base_txt["settings"])
         self.ids.lab_tit_lang.text = self.app.base_txt["languages"]
-        self.ids.b_flag_1.ids.but_flag.text = let_up_first(self.app.base_txt["german"])
-        self.ids.b_flag_2.ids.but_flag.text = let_up_first(self.app.base_txt["english"])
-        self.ids.b_box_settings.ids.but_1.text = let_up_first(self.app.base_txt["back"])
-        self.ids.b_box_settings.ids.but_2.text = let_up_first(self.app.base_txt["exit"])
-        self.ids.lab_tit_usr_man.text = let_up_first(
-            self.app.base_txt["user_management"]
-        )
+        self.ids.b_flag_1.ids.but_flag.text = let_up_first(base_txt["german"])
+        self.ids.b_flag_2.ids.but_flag.text = let_up_first(base_txt["english"])
+        self.ids.b_flag_3.ids.but_flag.text = let_up_first(base_txt["french"])
+        self.ids.b_flag_4.ids.but_flag.text = let_up_first(base_txt["italian"])
+        self.ids.b_flag_5.ids.but_flag.text = let_up_first(base_txt["spanish"])
+        self.ids.b_box_settings.ids.but_1.text = let_up_first(base_txt["back"])
+        self.ids.b_box_settings.ids.but_2.text = let_up_first(base_txt["exit"])
+        self.ids.lab_tit_usr_man.text = let_up_first(base_txt["user_management"])
 
-        self.ids.lbl_add_new_user.text = self.app.base_txt["new_user"]
-        self.ids.btn_add_new_user.text = let_up_first(self.app.base_txt["add"])
-        self.ids.lbl_res_u_data.text = self.app.base_txt["res_u_data"]
-        self.ids.btn_res_u_data.text = let_up_first(self.app.base_txt["delete"])
+        self.ids.lbl_add_new_user.text = let_up_first(base_txt["new_user"])
+        self.ids.btn_add_new_user.text = let_up_first(base_txt["add"])
+        self.ids.lbl_res_u_data.text = base_txt["res_u_data"]
+        self.ids.btn_res_u_data.text = let_up_first(base_txt["delete"])
 
     def change_lang(self, new_language: str) -> None:
         """
@@ -82,6 +90,12 @@ class Page_Settings(Screen):
             update_base_data("curr_lang", "de")
         elif new_language == self.app.base_txt["english"]:
             update_base_data("curr_lang", "en")
+        elif new_language == self.app.base_txt["french"]:
+            update_base_data("curr_lang", "fr")
+        elif new_language == self.app.base_txt["italian"]:
+            update_base_data("curr_lang", "it")
+        elif new_language == self.app.base_txt["spanish"]:
+            update_base_data("curr_lang", "es")
         self.app.load_app_data()
         Clock.schedule_once(self.upd_page)
 
@@ -144,6 +158,15 @@ class Page_Settings(Screen):
         self.ids.b_flag_2.ids.but_flag.bind(
             on_release=lambda instance: self.change_lang(instance.text.lower())
         )
+        self.ids.b_flag_3.ids.but_flag.bind(
+            on_release=lambda instance: self.change_lang(instance.text.lower())
+        )
+        self.ids.b_flag_4.ids.but_flag.bind(
+            on_release=lambda instance: self.change_lang(instance.text.lower())
+        )
+        self.ids.b_flag_5.ids.but_flag.bind(
+            on_release=lambda instance: self.change_lang(instance.text.lower())
+        )
         # Bind info button to open popup
         self.ids.t_box_sett.ids.but_info.bind(
             on_release=lambda instance: self.app.get_pop_man().open_inf_pop(
@@ -155,6 +178,9 @@ class Page_Settings(Screen):
         # Set flag images and bind language change actions
         self.ids.b_flag_1.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_ger.png")
         self.ids.b_flag_2.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_eng.png")
+        self.ids.b_flag_3.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_fra.png")
+        self.ids.b_flag_4.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_ita.png")
+        self.ids.b_flag_5.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_spa.png")
         if self.app.theme_manager.current_theme == "dark":
             self.ids.t_box_sett.ids.img_logo_main.source = PATH_TO_MAINLOGO_D
         else:

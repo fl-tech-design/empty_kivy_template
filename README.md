@@ -56,7 +56,7 @@ python3 main.py
 
 ### Working with the Repository
 
-When you clone this repository, you are downloading all the necessary files to work with the basic template, including the .git directory, which contains the version control history.
+When you clone this repository, you are downloading all the necessary files to work with the basic template, including the `.git` directory, which contains the version control history.
 
 ### Start a New Git Repository
 
@@ -106,7 +106,7 @@ Login/Register Functionality: Users can create accounts or log in to existing on
 User Data Reset: Administrators can reset all user data to the default state.
 Persistent User Status: The application tracks login status and user preferences.
 
-To enable user management, set USER_MANAGEMENT = True in constants.py.
+To enable user management, set <span style="color: #ff0000;">USER_MANAGEMENT</span> = <span style="color: #0000ff;">True</span> in `constants.py`.
 
 ## Screenshots
 ![Home Screen](data/base/base_images/home_screen.png)  

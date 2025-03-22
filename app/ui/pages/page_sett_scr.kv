@@ -18,9 +18,9 @@
         ColBoxLayout_1:
             orientation: 'vertical'
             size_hint_y: None
-            height: "90dp"
+            height: "200dp"
             padding: 4, 0, 4, 0
-            spacing: 2
+            spacing: 3
 
             # Box für die erste Sprache (z.B. Deutsch)
             BoxFlag:
@@ -29,6 +29,18 @@
             # Box für die zweite Sprache (z.B. Englisch)
             BoxFlag:
                 id: b_flag_2
+
+            # Box für die zweite Sprache (z.B. Englisch)
+            BoxFlag:
+                id: b_flag_3
+
+            # Box für die zweite Sprache (z.B. Englisch)
+            BoxFlag:
+                id: b_flag_4
+
+            # Box für die zweite Sprache (z.B. Englisch)
+            BoxFlag:
+                id: b_flag_5
 
         # Box Themes
         ColBoxLayout_1:
@@ -52,7 +64,7 @@
                 ColBoxLayout_1:
                     padding: 2
                     ColBoxLayout_2:
-                        Btn_Clear:
+                        Btn_Clear_1:
                             text: "Light"
                             on_release: app.change_theme("light")
 
@@ -60,9 +72,17 @@
                 ColBoxLayout_1:
                     padding: 2
                     ColBoxLayout_2:
-                        Btn_Clear:
+                        Btn_Clear_1:
                             text: "Dark"
                             on_release: app.change_theme("dark")
+
+                # Dark Theme Button
+                ColBoxLayout_1:
+                    padding: 2
+                    ColBoxLayout_2:
+                        Btn_Clear_1:
+                            text: "Hack"
+                            on_release: app.change_theme("hack")
 
         # User Management
         ColBoxLayout_1:
@@ -89,7 +109,7 @@
                 ColBoxLayout_1:
                     padding: 2
                     ColBoxLayout_4:
-                        Btn_Clear:
+                        Btn_Clear_2:
                             id: btn_add_new_user
                             on_release: root.add_new_user()
 
@@ -105,7 +125,7 @@
                 ColBoxLayout_1:
                     padding: 2
                     ColBoxLayout_5:
-                        Btn_Clear:
+                        Btn_Clear_1:
                             id: btn_res_u_data
                             on_release: root.reset_userdata()
 
