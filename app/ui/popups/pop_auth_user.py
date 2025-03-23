@@ -14,19 +14,19 @@ Builder.load_file(DIR_POPS + "pop_auth_user.kv")
 
 class Pop_Auth_User(Popup):
     """Popup for user authentication (login/registration).
-    
+
     Args:
         mode (str): Operation mode ('login' or 'register')
         **kwargs: Additional keyword arguments for Popup
     """
-    
+
     def __init__(self, mode: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.app: App = App.get_running_app()
         self.mode: str = mode
         self.usr_man: Any = self.app.get_usr_man() if USER_MANAGEMENT else None
         self.pop_man: Any = self.app.get_pop_man()
-        
+
         self._update_labels()
         Clock.schedule_once(self.set_focus)
         Window.bind(on_key_down=self.on_key_down)
@@ -35,7 +35,7 @@ class Pop_Auth_User(Popup):
         """Update all labels based on current mode (login/registration)."""
         base_txt = self.app.base_txt
         mode_title = "create_user" if self.mode == "register" else "login_user"
-        
+
         self.title = base_txt[mode_title]
         self.ids.lab_inf_create_user.text = base_txt[f"inf_{self.mode}_user"]
         self.ids.inp_username.hint_text = let_up_first(base_txt["username"])
@@ -78,22 +78,17 @@ class Pop_Auth_User(Popup):
             self.pop_man.open_error_popup(base_txt["inf_err_regist"])
 
     def on_key_down(
-        self, 
-        window: Any, 
-        key: int, 
-        scancode: int, 
-        codepoint: str, 
-        modifier: list
+        self, window: Any, key: int, scancode: int, codepoint: str, modifier: list
     ) -> bool:
         """Handle keyboard input (TAB key for focus switching).
-        
+
         Args:
             window: Kivy window instance
             key (int): Key code
             scancode (int): Physical key scan code
             codepoint (str): Unicode character
             modifier (list): Modifier keys
-            
+
         Returns:
             bool: True if event was handled, else False
         """
@@ -108,7 +103,7 @@ class Pop_Auth_User(Popup):
 
     def set_focus(self, dt: float) -> None:
         """Set focus to username input field.
-        
+
         Args:
             dt (float): Time delta since last frame (unused)
         """
