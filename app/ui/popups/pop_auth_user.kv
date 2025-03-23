@@ -7,7 +7,9 @@
 <Pop_Auth_User@Popup>:
     # Popup configuration
     auto_dismiss: False  # Prevent closing by clicking outside
-    size_hint: (0.75, 0.5)
+    size_hint: (None, None)
+    width: "500dp"
+    height: "300dp"
     background_color: constants.APP_BG
     title_size: '23sp'
     title_font: constants.DIR_FONTS + "cmunobx.ttf"
@@ -29,10 +31,10 @@
             
             # Information label section
             ColBoxLayout_2:
+                size_hint: (1, None)
+                height: 80
                 Lbl_Small:
                     id: lab_inf_create_user
-                    size_hint: (1, None)
-                    height: 200
                     text_size: (self.width - 40, None)
                     halign: 'center'
                     valign: 'middle'
@@ -62,28 +64,28 @@
                     # Password visibility toggle
                     ToggleButton:
                         size_hint_x: None
-                        width: "34dp"
-                        text: " " if self.state == "normal" else "X"  # Visual state indicator
+                        width: "50dp"
+                        text: "Show" if self.state == "normal" else "X"  # Visual state indicator
                         on_release: inp_passwd.password = not self.state == "down"
             
             # Action buttons section
             ColBoxLayout_1:
                 orientation: "vertical"
                 padding: 2
+                size_hint_y: None
+                height: "40dp"
                 ColBoxLayout_4:
                     padding: 2
                     spacing: 8
                     
                     # Confirm button
                     ColBoxLayout_2:
-                        height: "40dp"
                         Btn_Clear_1:
                             id: but_confirm
                             on_release: root.but_confirm_released()
                     
                     # Close button
                     ColBoxLayout_2:
-                        height: "40dp"
                         Btn_Clear_1:
                             id: but_close
                             on_release: root._close_popup()
