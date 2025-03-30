@@ -1,6 +1,7 @@
 {
     "curr_theme": "dark",
     "curr_lang": "en",
+    "curr_user": "",
     "themes": {
         "light": {
             "col1": [

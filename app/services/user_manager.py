@@ -2,9 +2,10 @@
 from typing import Dict, Any
 from datetime import datetime
 
-from constants import USERS_DATA, DIR_USERFILES
+from constants import LOGIN_DATA, DIR_USERFILES
 
 from app.services.logger_config import setup_logger
+
 logger = setup_logger()
 
 import bcrypt
@@ -15,43 +16,43 @@ import os
 class UserManager:
     def __init__(self):
         """
-        Initializes the user manager with configuration data.
+        Initializes the user manager with configuration login_data.
 
-        Loads user data from the configured JSON file, creates default
-        data structure if the file doesn't exist.
+        Loads user login_data from the configured JSON file, creates default
+        login_data structure if the file doesn't exist.
         """
-        self.data_file: str = USERS_DATA  # Path to user data file
-        self.data: Dict[str, Any] = self._load_data()
+        self.login_data_file: str = LOGIN_DATA  # Path to user login_data file
+        self.login_data: Dict[str, Any] = self._load_login_data()
 
-    def _load_data(self) -> Dict[str, Any]:
+    def _load_login_data(self) -> Dict[str, Any]:
         """
-        Loads user data from the configured JSON file.
+        Loads user login_data from the configured JSON file.
 
-        Creates default data if the file doesn't exist. Should only be
+        Creates default login_data if the file doesn't exist. Should only be
         called during initialization.
 
         Returns:
-            Dict[str, Any]: Loaded user data structure
+            Dict[str, Any]: Loaded user login_data structure
         """
-        if not os.path.exists(self.data_file):
+        if not os.path.exists(self.login_data_file):
             self._create_default_data()
 
-        with open(self.data_file, "r") as f:
+        with open(self.login_data_file, "r") as f:
             return json.load(f)
 
-    def _save_data(self) -> None:
+    def _save_login_data(self) -> None:
         """
-        Persists current user data to the JSON file.
+        Persists current user login_data to the JSON file.
 
-        Writes the entire data structure to disk with indentation
+        Writes the entire login_data structure to disk with indentation
         for human readability.
         """
-        with open(self.data_file, "w") as f:
-            json.dump(self.data, f, indent=4)
+        with open(self.login_data_file, "w") as f:
+            json.dump(self.login_data, f, indent=4)
 
     def _create_default_data(self) -> None:
         """
-        Creates initial default user data structure.
+        Creates initial default user login_data structure.
 
         Defines the base structure containing:
         - user_stat (bool)
@@ -63,8 +64,8 @@ class UserManager:
             "login_stat": False,
             "users": {},
         }
-        self.data = default
-        self._save_data()
+        self.login_data = default
+        self._save_login_data()
 
     def hash_password(self, password: str) -> str:
         """
@@ -95,9 +96,9 @@ class UserManager:
         Returns:
             bool: True if credentials are valid, False otherwise
         """
-        if username not in self.data["users"]:
+        if username not in self.login_data["users"]:
             return False
-        stored_hash = self.data["users"][username].encode("utf-8")
+        stored_hash = self.login_data["users"][username].encode("utf-8")
         return bcrypt.checkpw(password.encode("utf-8"), stored_hash)
 
     def create_userfile(self, username: str, hashed_pw: str) -> None:
@@ -117,7 +118,8 @@ class UserManager:
                 "username": {
                     "username": str,
                     "password_hash": str,
-                    "created_at": str (ISO 8601 timestamp)
+                    "created_at": str (ISO 8601 timestamp),
+                    "usertheme": ""
                 }
             }
 
@@ -125,17 +127,18 @@ class UserManager:
             No explicit exceptions (IO errors are caught and logged)
         """
         f_path: str = f"{DIR_USERFILES}{username}.json"
-        data: Dict[str, Dict[str, str]] = {
+        login_data: Dict[str, Dict[str, str]] = {
             username: {
                 "username": username,
                 "password_hash": hashed_pw,
                 "created_at": datetime.now().isoformat(),
+                "usertheme": "dark",
             }
         }
 
         try:
             with open(f_path, "w") as file:
-                json.dump(data, file, indent=4)
+                json.dump(login_data, file, indent=4)
         except IOError as e:
             logger.error(f"Error saving JSON file {f_path}: {e}")
 
@@ -152,13 +155,13 @@ class UserManager:
         Raises:
             ValueError: If username already exists
         """
-        if username in self.data["users"]:
+        if username in self.login_data["users"]:
             raise ValueError("Username already exists")
-        self.data["users"][username] = hashed_pw
-        self._save_data()
+        self.login_data["users"][username] = hashed_pw
+        self._save_login_data()
         self.create_userfile(username, hashed_pw)
 
-    def change_stat(self, which_stat: str, new_user_stat: bool) -> None:
+    def change_stat(self, which_stat: str, new_stat: bool) -> None:
         """
         Updates the user management status.
 
@@ -167,6 +170,8 @@ class UserManager:
         Args:
             new_user_stat: New status value to set
         """
-        self.data[which_stat] = new_user_stat
-        self._save_data()
+        self.login_data[which_stat] = new_stat
+        self._save_login_data()
 
+    def set_curr_user(self, username):
+        pass

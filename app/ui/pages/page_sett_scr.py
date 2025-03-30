@@ -4,7 +4,7 @@ such as language selection, theme management, and user data handling.
 """
 
 from constants import (
-    DIR_FLAGS,
+    DIR_IMGS,
     DIR_USERFILES,
     USER_MANAGEMENT,
     PATH_TO_MAINLOGO_D,
@@ -176,11 +176,11 @@ class Page_Settings(Screen):
 
     def set_img_sources(self):
         # Set flag images and bind language change actions
-        self.ids.b_flag_1.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_ger.png")
-        self.ids.b_flag_2.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_eng.png")
-        self.ids.b_flag_3.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_fra.png")
-        self.ids.b_flag_4.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_ita.png")
-        self.ids.b_flag_5.ids.img_flag.source = os.path.join(DIR_FLAGS, "flag_spa.png")
+        self.ids.b_flag_1.ids.img_flag.source = os.path.join(DIR_IMGS, "flag_ger.png")
+        self.ids.b_flag_2.ids.img_flag.source = os.path.join(DIR_IMGS, "flag_eng.png")
+        self.ids.b_flag_3.ids.img_flag.source = os.path.join(DIR_IMGS, "flag_fra.png")
+        self.ids.b_flag_4.ids.img_flag.source = os.path.join(DIR_IMGS, "flag_ita.png")
+        self.ids.b_flag_5.ids.img_flag.source = os.path.join(DIR_IMGS, "flag_spa.png")
         if self.app.theme_manager.current_theme == "dark":
             self.ids.t_box_sett.ids.img_logo_main.source = PATH_TO_MAINLOGO_D
         else:

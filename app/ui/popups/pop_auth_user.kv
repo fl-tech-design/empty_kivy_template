@@ -63,9 +63,15 @@
                     
                     # Password visibility toggle
                     ToggleButton:
+                        canvas.before:
+                            Color: 
+                                rgba: [0.2, 0.2, 0.2, 1]
+                            Rectangle: 
+                                size: self.size
+                                pos: self.pos
+                                source: constants.DIR_IMGS + "eye_down.png"
                         size_hint_x: None
                         width: "50dp"
-                        text: "Show" if self.state == "normal" else "X"  # Visual state indicator
                         on_release: inp_passwd.password = not self.state == "down"
             
             # Action buttons section

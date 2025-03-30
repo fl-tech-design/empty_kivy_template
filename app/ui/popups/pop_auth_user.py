@@ -7,7 +7,6 @@ from kivy.core.window import Window
 
 from constants import DIR_POPS, USER_MANAGEMENT
 from app.services.contr_str import let_up_first
-from app.ui.popups.pop_error import Pop_Error
 
 Builder.load_file(DIR_POPS + "pop_auth_user.kv")
 
@@ -35,6 +34,7 @@ class Pop_Auth_User(Popup):
         """Update all labels based on current mode (login/registration)."""
         base_txt = self.app.base_txt
         mode_title = "create_user" if self.mode == "register" else "login_user"
+
 
         self.title = base_txt[mode_title]
         self.ids.lab_inf_create_user.text = base_txt[f"inf_{self.mode}_user"]

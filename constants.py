@@ -10,7 +10,7 @@ import os
 from typing import List
 
 # Application metadata
-VERSION_NR: str = "0.0.1"
+VERSION_NR: str = "0.1.0"
 """The version number of the application."""
 
 APP_TITLE: str = "neue App"
@@ -38,7 +38,7 @@ DATA_APP: str = os.path.join(os.path.dirname(__file__), "data/app/app_data.json"
 TXT_APP: str = os.path.join(os.path.dirname(__file__), "data/app/app_txt.json")
 """Path to the application-specific text JSON file."""
 
-USERS_DATA: str = os.path.join(os.path.dirname(__file__), "data/users/user_data.json")
+LOGIN_DATA: str = os.path.join(os.path.dirname(__file__), "data/users/login_data.json")
 """Path to the user data JSON file."""
 
 # Directory paths
@@ -48,7 +48,7 @@ DIR_USERFILES: str = os.path.join(os.path.dirname(__file__), "data/users/userfil
 DIR_FONTS: str = os.path.join(os.path.dirname(__file__), "data/base/base_fonts/")
 """Directory containing font files."""
 
-DIR_FLAGS: str = os.path.join(os.path.dirname(__file__), "data/base/base_images/")
+DIR_IMGS: str = os.path.join(os.path.dirname(__file__), "data/base/base_images/")
 """Directory containing flag images."""
 
 DIR_POPS: str = os.path.join(os.path.dirname(__file__), "app/ui/popups/")

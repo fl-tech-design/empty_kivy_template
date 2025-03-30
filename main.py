@@ -11,7 +11,7 @@ from constants import (
     SPL_SCREEN_START_APP,
     BASE_DATA,
     BASE_TXT,
-    USERS_DATA,
+    LOGIN_DATA,
     APP_TITLE,
     USER_MANAGEMENT,
 )
@@ -147,7 +147,7 @@ class MainApp(App):
         """
         self.base_data = read_from_json(BASE_DATA)
         self.base_txt = read_from_json(BASE_TXT)[self.base_data["curr_lang"]]
-        self.users_data = read_from_json(USERS_DATA)
+        self.users_data = read_from_json(LOGIN_DATA)
 
     def start_user_management(self) -> None:
         """
